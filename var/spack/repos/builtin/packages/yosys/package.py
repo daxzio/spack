@@ -19,18 +19,28 @@ class Yosys(MakefilePackage):
     license that is similar in terms to the MIT license or the 2-clause BSD license).
     """
 
-    homepage = "https://modules.readthedocs.io"
-    url = "https://github.com/YosysHQ/yosys/releases/download/yosys-0.34/abc.tar.gz"
+    homepage = "https://yosyshq.net/yosys"
+    url = "https://github.com/YosysHQ/yosys/archive/refs/tags/yosys-0.34.tar.gz"
 
-    version("0.34", sha256="b0f09893f9b1a5c2eb0c5597283b0374bbc7606bb120d23fcf558b432a216ec5")
+    #version("0.20", sha256="9764380f6e187cb4344334e1e921ec3206ff6ae3105e3a8d5e56ac49301c433b")
+    version("0.34", sha256="57897bc3fe5fdc940e9f3f3ae03b84f5f8e9149b6f26d3699f7ecb9f31a41ae0")
 
     depends_on("automake")
-    depends_on("readline")
+    #depends_on("readline")
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)
         src = "./"
-        binaries = ['abc', 'arch_flags']
+#         binaries = ['abc', 'arch_flags']
+        binaries = [
+            'yosys', 
+            'yosys-config',             '', 
+            'yosys-abc', 
+            'yosys-filterlib', 
+            'yosys-smtbmc', 
+            'yosys-witness', 
+#             '', 
+            ]
         for b in binaries:
             install(join_path(src, b), join_path(prefix.bin, b))
 
