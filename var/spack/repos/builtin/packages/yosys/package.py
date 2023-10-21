@@ -25,6 +25,7 @@ class Yosys(MakefilePackage):
     version("0.34", sha256="b0f09893f9b1a5c2eb0c5597283b0374bbc7606bb120d23fcf558b432a216ec5")
 
     depends_on("automake")
+    depends_on("readline")
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)
