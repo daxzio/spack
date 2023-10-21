@@ -22,25 +22,12 @@ class Yosys(MakefilePackage):
     homepage = "https://yosyshq.net/yosys"
     url = "https://github.com/YosysHQ/yosys/archive/refs/tags/yosys-0.34.tar.gz"
 
-    #version("0.20", sha256="9764380f6e187cb4344334e1e921ec3206ff6ae3105e3a8d5e56ac49301c433b")
+    version("0.20", sha256="ee261487badf1b554616d555da8496a7c84ef21ae66a979ddd946b6949a780a4")
     version("0.34", sha256="57897bc3fe5fdc940e9f3f3ae03b84f5f8e9149b6f26d3699f7ecb9f31a41ae0")
 
     depends_on("automake")
-    #depends_on("readline")
+    depends_on("pkg-config")
+    depends_on("llvm")
 
-    def install(self, spec, prefix):
-        mkdir(prefix.bin)
-        src = "./"
-#         binaries = ['abc', 'arch_flags']
-        binaries = [
-            'yosys', 
-            'yosys-config',             '', 
-            'yosys-abc', 
-            'yosys-filterlib', 
-            'yosys-smtbmc', 
-            'yosys-witness', 
-#             '', 
-            ]
-        for b in binaries:
-            install(join_path(src, b), join_path(prefix.bin, b))
-
+    def edit(self, spec, prefix):
+        env['PREFIX'] = prefix
