@@ -36,16 +36,16 @@ class Yosys(MakefilePackage):
 
     def edit(self, spec, prefix):
         env['PREFIX'] = prefix
-        env['LDFLAGS'] = f"-I${spec['readline'].prefix.lib}"
-        env['CFLAGS'] = f"-I${spec['readline'].prefix.include}"
-        env['CXXFLAGS'] = f"-I${spec['readline'].prefix.include}"
+        env.set('LDFLAGS', f"-I${spec['readline'].prefix.lib}")
+        env.set('CFLAGS', f"-I${spec['readline'].prefix.include}")
+        env.set('CXXFLAGS', f"-I${spec['readline'].prefix.include}")
         #env['ENABLE_READLINE'] = 0
     
-    def build(self, spec, prefix):
-        env['LDFLAGS'] = f"-I${spec['readline'].prefix.lib}"
-        env['CFLAGS'] = f"-I${spec['readline'].prefix.include}"
-        env['CXXFLAGS'] = f"-I${spec['readline'].prefix.include}"
-        super().build(spec, prefix)
+#     def build(self, spec, prefix):
+#         env['LDFLAGS'] = f"-I${spec['readline'].prefix.lib}"
+#         env['CFLAGS'] = f"-I${spec['readline'].prefix.include}"
+#         env['CXXFLAGS'] = f"-I${spec['readline'].prefix.include}"
+#         super().build(spec, prefix)
 
 #      def build(self, spec, prefix):
 #          options = [
