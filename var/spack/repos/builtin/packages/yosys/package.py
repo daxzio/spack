@@ -38,6 +38,7 @@ class Yosys(MakefilePackage):
         env['PREFIX'] = prefix
         env['LDFLAGS'] = f"-I${spec['ncurses'].prefix.lib}"
         env['CFLAGS'] = f"-I${spec['ncurses'].prefix.include}"
+        env['CXXFLAGS'] = f"-I${spec['ncurses'].prefix.include}"
         #env['ENABLE_READLINE'] = 0
 
 #      def build(self, spec, prefix):
