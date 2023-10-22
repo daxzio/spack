@@ -27,13 +27,13 @@ class Yosys(MakefilePackage):
     version("0.34", sha256="57897bc3fe5fdc940e9f3f3ae03b84f5f8e9149b6f26d3699f7ecb9f31a41ae0")
 
     depends_on("automake")
-    depends_on("pkg-config")
-    depends_on("llvm")
-    depends_on("tcl")
     depends_on("readline")
+    depends_on("pkg-config")
+    depends_on("tcl")
+    depends_on("llvm")
     #depends_on("gcc@8.4:", type=("build", "run"))
     #depends_on("gcc@8.4:")
 
     def edit(self, spec, prefix):
         env['PREFIX'] = prefix
-        env['ENABLE_READLINE'] = 0
+        #env['ENABLE_READLINE'] = 0
