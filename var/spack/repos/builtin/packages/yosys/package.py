@@ -22,12 +22,18 @@ class Yosys(MakefilePackage):
     homepage = "https://yosyshq.net/yosys"
     url = "https://github.com/YosysHQ/yosys/archive/refs/tags/yosys-0.34.tar.gz"
 
+    version("0.5",  sha256="f2adb8115f95e9613838fc545bad94dcfe7c8afcfb092595c1b6996f81eadfac")
     version("0.20", sha256="ee261487badf1b554616d555da8496a7c84ef21ae66a979ddd946b6949a780a4")
     version("0.34", sha256="57897bc3fe5fdc940e9f3f3ae03b84f5f8e9149b6f26d3699f7ecb9f31a41ae0")
 
     depends_on("automake")
     depends_on("pkg-config")
     depends_on("llvm")
+    depends_on("tcl")
+    depends_on("readline")
+    #depends_on("gcc@8.4:", type=("build", "run"))
+    #depends_on("gcc@8.4:")
 
     def edit(self, spec, prefix):
         env['PREFIX'] = prefix
+        env['ENABLE_READLINE'] = 0
