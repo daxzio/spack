@@ -421,6 +421,7 @@ class Bazel(Package):
     depends_on("java@7:8", when="@:0.5", type=("build", "run"))
     depends_on("python+pythoncmd", type=("build", "run"))
     depends_on("zip", when="platform=linux", type=("build", "run"))
+    depends_on("unzip", when="platform=linux", type=("build", "run"))
 
     # Pass Spack environment variables to the build
     patch("bazelruleclassprovider-0.25.patch", when="@0.25:")
@@ -492,6 +493,8 @@ class Bazel(Package):
     # newer versions of grpc and abseil dependencies are needed but are not in
     # bazel-4.0.0
     conflicts("@:0.2,4.0.0", when="%gcc@11:")
+
+    conflicts("%gcc@13:")
 
     executables = ["^bazel$"]
 
