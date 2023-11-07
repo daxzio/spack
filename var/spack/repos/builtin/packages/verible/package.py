@@ -27,12 +27,14 @@ class Verible(Package):
     other languages."""
 
     homepage = "https://chipsalliance.github.io/verible"
-    #url = "https://github.com/chipsalliance/verible/archive/refs/tags/v0.0-3428-gcfcbb82b.tar.gz"
+    git = "https://github.com/chipsalliance/verible.git"
 
-    version("v0.0-3428-gcfcbb82b", sha256="3a8e5aaeb81bf11f2c97f28fce49175989aab0cbeda859107d1fbdb054d039f8", url = "https://github.com/chipsalliance/verible/archive/refs/tags/v0.0-3428-gcfcbb82b.tar.gz")
+    version(
+        "v0.0-3428-gcfcbb82b", 
+        sha256="3a8e5aaeb81bf11f2c97f28fce49175989aab0cbeda859107d1fbdb054d039f8", 
+        url = "https://github.com/chipsalliance/verible/archive/refs/tags/v0.0-3428-gcfcbb82b.tar.gz")
 
     maintainers("davekeeshan")
-#     version("master", preferred=True)
 
     depends_on("flex", type="build")
     depends_on("bison", type="build")
