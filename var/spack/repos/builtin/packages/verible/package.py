@@ -34,8 +34,8 @@ class Verible(Package):
     maintainers("davekeeshan")
 #     version("master", preferred=True)
 
-    depends_on("flex")
-    depends_on("bison")
+    depends_on("flex", type="build")
+    depends_on("bison", type="build")
     depends_on("bazel", type="build")
 
     def install(self, spec, prefix):
