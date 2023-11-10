@@ -12,17 +12,58 @@ from spack.package import *
 class RiscvGnuToolchain(AutotoolsPackage):
     """A cross-compilation tool for RISC-V."""
 
-    homepage = "https://spack-tutorial.readthedocs.io/"
+    homepage = "https://riscv.org"
     git = "https://github.com/riscv-collab/riscv-gnu-toolchain.git"
 
     maintainers("wanlinwang")
 
     version("develop", branch="master", submodules=True)
     version(
+        "2023.10.18",
+        tag="2023.10.18",
+        commit="b86b2b37d0acc607156ff56ff17ee105a9b48897",
+        submodules=True,
+    )
+    version(
+        "2023.01.04",
+        tag="2023.01.04",
+        commit="51c73700789f54db7e8c22e5bf1654bcfdd074d0",
+        submodules=True,
+    )
+    version(
         "2022.08.08",
         tag="2022.08.08",
         commit="cb25bb862a3bf56d1577d7930bc41f259632ae24",
         submodules=True,
+    )
+#     version(
+#         "2018.06.29",
+#         tag="v20180629",
+#         commit="cb6b34b8581bfc72197aa24bd4f367d54db81b51",
+#         submodules=True,
+#     )
+    version(
+        "2018.02.14",
+        tag="v20180629",
+        commit="411d134",
+        submodules=True,
+    )
+
+    variant("32", default=False, description="32 bit only support")
+    variant("multilib", default=False, description="64 and 32 bit support")
+
+    variant(
+        "rvarch",
+        default="rv32gc",
+        values=("rv32i", "rv32ic", "rv32im", "rv32imc", "rv32gc"),
+        description="Different compiler setting",
+    )
+
+    variant(
+        "compiler_type",
+        default="newlib",
+        values=("newlib", "linux"),
+        description="Compiler back-end to build",
     )
 
     # Dependencies:
@@ -44,13 +85,29 @@ class RiscvGnuToolchain(AutotoolsPackage):
 
     conflicts("platform=windows", msg="Windows is not supported.")
 
-    variant(
-        "compiler_type",
-        default="newlib",
-        values=("newlib", "linux"),
-        description="Compiler back-end to build",
-    )
+    def configure_args(self):
+        self.spec.prefix = f"{prefix}-rv32i"
+        args = []
+#         args += self.with_or_without("arch=rv32gc", variant="32")    
+#         args += self.with_or_without("abi=ilp32d", variant="32")    
+    
+        if self.spec.satisfies("+32"):
+        #if self.spec.satisfies("rvarch=rv32i"):
+            args.append("--with-arch=rv32i")
 
+#             args.append("--with-arch=rv32gc")
+
+
+#      16009    --with-abi=ilp32d is not supported for ISA rv32i
+#         if self.spec.satisfies("+32"):
+#             args.append("--with-abi=ilp32d")
+#         if self.spec.satisfies("+multilib"):
+#             args.append("--enable-multilib")
+        args += self.enable_or_disable("multilib", variant="multilib")    
+        
+#         args.append("-xib")
+        return args
+    
     def build(self, spec, prefix):
         """Makes the build targets specified by
         :py:attr:``~.AutotoolsPackage.build_targets``
