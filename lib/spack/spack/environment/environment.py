@@ -342,7 +342,7 @@ def create_in_dir(
 
         manifest.flush()
 
-    except spack.config.ConfigFormatError as e:
+    except (spack.config.ConfigFormatError, SpackEnvironmentConfigError) as e:
         shutil.rmtree(manifest_dir)
         raise e
 
@@ -396,7 +396,13 @@ def all_environments():
 
 def _read_yaml(str_or_file):
     """Read YAML from a file for round-trip parsing."""
-    data = syaml.load_config(str_or_file)
+    try:
+        data = syaml.load_config(str_or_file)
+    except syaml.SpackYAMLError as e:
+        raise SpackEnvironmentConfigError(
+            f"Invalid environment configuration detected: {e.message}"
+        )
+
     filename = getattr(str_or_file, "name", None)
     default_data = spack.config.validate(data, spack.schema.env.schema, filename)
     return data, default_data
@@ -1352,7 +1358,7 @@ class Environment:
 
         # Remove concrete specs that no longer correlate to a user spec
         for spec in set(self.concretized_user_specs) - set(self.user_specs):
-            self.deconcretize(spec)
+            self.deconcretize(spec, concrete=False)
 
         # Pick the right concretization strategy
         if self.unify == "when_possible":
@@ -1367,15 +1373,36 @@ class Environment:
         msg = "concretization strategy not implemented [{0}]"
         raise SpackEnvironmentError(msg.format(self.unify))
 
-    def deconcretize(self, spec):
+    def deconcretize(self, spec: spack.spec.Spec, concrete: bool = True):
+        """
+        Remove specified spec from environment concretization
+
+        Arguments:
+            spec: Spec to deconcretize. This must be a root of the environment
+            concrete: If True, find all instances of spec as concrete in the environemnt.
+                If False, find a single instance of the abstract spec as root of the environment.
+        """
         # spec has to be a root of the environment
-        index = self.concretized_user_specs.index(spec)
-        dag_hash = self.concretized_order.pop(index)
-        del self.concretized_user_specs[index]
+        if concrete:
+            dag_hash = spec.dag_hash()
+
+            pairs = zip(self.concretized_user_specs, self.concretized_order)
+            filtered = [(spec, h) for spec, h in pairs if h != dag_hash]
+            # Cannot use zip and unpack two values; it fails if filtered is empty
+            self.concretized_user_specs = [s for s, _ in filtered]
+            self.concretized_order = [h for _, h in filtered]
+        else:
+            index = self.concretized_user_specs.index(spec)
+            dag_hash = self.concretized_order.pop(index)
+
+            del self.concretized_user_specs[index]
 
         # If this was the only user spec that concretized to this concrete spec, remove it
         if dag_hash not in self.concretized_order:
-            del self.specs_by_hash[dag_hash]
+            # if we deconcretized a dependency that doesn't correspond to a root, it
+            # won't be here.
+            if dag_hash in self.specs_by_hash:
+                del self.specs_by_hash[dag_hash]
 
     def _get_specs_to_concretize(
         self,
@@ -1733,11 +1760,14 @@ class Environment:
         self, view: ViewDescriptor, reverse: bool = False
     ) -> spack.util.environment.EnvironmentModifications:
         try:
-            mods = uenv.environment_modifications_for_specs(*self.concrete_roots(), view=view)
+            with spack.store.STORE.db.read_transaction():
+                installed_roots = [s for s in self.concrete_roots() if s.installed]
+            mods = uenv.environment_modifications_for_specs(*installed_roots, view=view)
         except Exception as e:
             # Failing to setup spec-specific changes shouldn't be a hard error.
             tty.warn(
-                "couldn't load runtime environment due to {}: {}".format(e.__class__.__name__, e)
+                f"could not {'unload' if reverse else 'load'} runtime environment due "
+                f"to {e.__class__.__name__}: {e}"
             )
             return spack.util.environment.EnvironmentModifications()
         return mods.reversed() if reverse else mods
@@ -2960,3 +2990,7 @@ class SpackEnvironmentError(spack.error.SpackError):
 
 class SpackEnvironmentViewError(SpackEnvironmentError):
     """Class for errors regarding view generation."""
+
+
+class SpackEnvironmentConfigError(SpackEnvironmentError):
+    """Class for Spack environment-specific configuration errors."""
