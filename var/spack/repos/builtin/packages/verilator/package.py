@@ -33,19 +33,32 @@ class Verilator(AutotoolsPackage):
     designs with thousands of modules."""
 
     homepage = "https://www.veripool.org/projects/verilator"
-    url = "https://www.veripool.org/ftp/verilator-3.920.tgz"
+    url = "https://github.com/verilator/verilator/archive/refs/tags/v5.018.tar.gz"
+    git = "https://github.com/verilator/verilator.git"
 
-    version("4.108", sha256="8e8ec1de0bf200b6206035214f9071a5acc64bd2e7134361d564271e48552702")
-    version("4.020", sha256="abd79fc2a54cab9da33dfccd669bda3baa71e79060abec17517f0b7374dbc31a")
-    version("3.920", sha256="2b5c38aa432d0766a38475219f9548d64d18104ce8bdcb5d29e42f5da06943ff")
-    version("3.904", sha256="ea95e08b2d70682ad42e6c2f5ba99f59b2e7b220791214076099cdf6b7a8c1cb")
+    version("5.018", sha256="8b544273eedee379e3c1a3bb849e14c754c9b5035d61ad03acdf3963092ba6c0")
+    version("5.016", sha256="66fc36f65033e5ec904481dd3d0df56500e90c0bfca23b2ae21b4a8d39e05ef1")
+    version("5.014", sha256="36e16c8a7c4b376f88d87411cea6ee68710e6d1382a13faf21f35d65b54df4a7")
+    version("4.108", sha256="ce521dc57754e5a325ff7000c434ce23674c8e1de30e1f2a6506dc3a33bd7c55")
+    
+#     version("4.020", sha256="e19ccbaad305d7aa2a0e56fc1a1629c4db1b4abd7f4530b9c035ee715217f3f2")
+#     version("3.920", sha256="2b5c38aa432d0766a38475219f9548d64d18104ce8bdcb5d29e42f5da06943ff")
+#     version("3.904", sha256="ea95e08b2d70682ad42e6c2f5ba99f59b2e7b220791214076099cdf6b7a8c1cb")
 
+    depends_on("autoconf", type="build")
+    depends_on("automake", type="build")
+    depends_on("libtool", type="build")
+    depends_on("help2man", type="build")
     depends_on("bison", type="build")
     depends_on("flex")
     depends_on("perl", type=("build", "run"))
+    depends_on("bash", type="build")
 
     def setup_run_environment(self, env):
         env.prepend_path("VERILATOR_ROOT", self.prefix)
+
+    def autoreconf(self, spec, prefix):
+        which("bash")("autoconf")
 
     # verilator requires access to its shipped scripts (bin) and include
     # but the standard make doesn't put it in the correct places
@@ -60,11 +73,11 @@ class Verilator(AutotoolsPackage):
     def patch_cxx(self):
         filter_file(
             r"^CXX\s*=.*",
-            "CXX = {0}".format(self.compiler.cxx),
+            f"CXX = {self.compiler.cxx}",
             join_path(self.prefix.include, "verilated.mk"),
         )
         filter_file(
             r"^LINK\s*=.*",
-            "LINK = {0}".format(self.compiler.cxx),
+            f"LINK = {self.compiler.cxx}",
             join_path(self.prefix.include, "verilated.mk"),
         )
