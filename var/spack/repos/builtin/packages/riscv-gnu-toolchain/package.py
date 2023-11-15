@@ -19,56 +19,32 @@ class RiscvGnuToolchain(AutotoolsPackage):
 
     version("develop", branch="master", submodules=True)
     version(
-        "2023.10.18",
-        tag="2023.10.18",
-        commit="b86b2b37d0acc607156ff56ff17ee105a9b48897",
-        submodules=True,
+        "2023.10.18", 
+        sha256="083f47659329af6b58bb45b6bf49aa7930f4d27a9b469ef0f2a05f67355aba99", 
+        url = "https://github.com/riscv-collab/riscv-gnu-toolchain/archive/refs/tags/2023.11.08.tar.gz"
     )
+#     version(
+#         "2023.10.18",
+#         tag="2023.10.18",
+#         commit="b86b2b37d0acc607156ff56ff17ee105a9b48897",
+#         submodules=True,
+#     )
     version(
         "2023.01.04",
         tag="2023.01.04",
         commit="51c73700789f54db7e8c22e5bf1654bcfdd074d0",
         submodules=True,
     )
-        "2023.10.17",
-        tag="2023.10.17",
-        commit="c11f0748276c58df4f9d9602cdc2de5f17cbae8c",
-        submodules=True,
-    )
-    version(
-        "2023.10.12",
-        tag="2023.10.12",
-        commit="e65e7fc58543c821baf4f1fb6d0ef700177b9d89",
-        submodules=True,
-    )
-    version(
-        "2023.10.06",
-        tag="2023.10.06",
-        commit="6e7190e8c95e09d541e69f6f6e39163f808570d5",
-        submodules=True,
-    )
-    version(
-        "2023.09.27",
-        tag="2023.09.27",
-        commit="5afde2de23c6597aaa5069f36574c61bcb39b007",
-        submodules=True,
-    )
-    version(
-        "2023.09.26",
-        tag="2023.09.26",
-        commit="ffb5968884630c7baebba7b2af493f6b5f74ad80",
-        submodules=True,
-    )
-    version(
-        "2023.09.13",
-        tag="2023.09.13",
-        commit="5437780994b830e9eabf467f85f22ed24b5fade1",
-        submodules=True,
-    )
     version(
         "2022.08.08",
         tag="2022.08.08",
         commit="cb25bb862a3bf56d1577d7930bc41f259632ae24",
+        submodules=True,
+    )
+    version(
+        "2021.01.26",
+        tag="2021.01.26",
+        commit="407cdc0ceb0f6d760342ac6cf1b890378f5a81bd",
         submodules=True,
     )
 #     version(
@@ -121,7 +97,7 @@ class RiscvGnuToolchain(AutotoolsPackage):
     conflicts("platform=windows", msg="Windows is not supported.")
 
     def configure_args(self):
-        self.spec.prefix = f"{prefix}-rv32i"
+        #self.spec.prefix = f"{prefix}-rv32i"
         args = []
 #         args += self.with_or_without("arch=rv32gc", variant="32")    
 #         args += self.with_or_without("abi=ilp32d", variant="32")    
@@ -143,18 +119,42 @@ class RiscvGnuToolchain(AutotoolsPackage):
 #         args.append("-xib")
         return args
     
+# #     @run_before("configure")
+#     @run_before("autoreconf")
+#     def git_cleanup(self):
+#         with working_dir(self.stage.source_path):
+#             #raise Exception(f"{self.stage.source_path}")
+#             cmds = [
+#                 "git submodule set-url riscv-glibc git@github.com:riscvarchive/riscv-glibc.git",
+#                 "git submodule set-url riscv-qemu git@github.com:riscvarchive/riscv-qemu.git",
+#             ]
+#             for cmd in cmds:
+#                 p = Popen(shlex.split(cmd))
+#                 p.wait()
+#                 p.communicate()
+
     def build(self, spec, prefix):
         """Makes the build targets specified by
         :py:attr:``~.AutotoolsPackage.build_targets``
         """
         with working_dir(self.stage.source_path):
-            # modify Makefile not to git init submodules.
-            cmd = "/bin/sed -i.bak -r \
-            '/^# Rule for auto init submodules/,/git submodule update.*$/d' \
-            Makefile"
-            p = Popen(shlex.split(cmd))
-            p.wait()
-            p.communicate()
+#             cmds = [
+#                 "git config --local url.git@github.com:riscvarchive/riscv-glibc.git.insteadOf git@github.com:riscv-collab/riscv-glibc.git",
+#                 "git config --local url.git@gitlab.com:qemu-project/qemu.git.insteadOf git@github.com:riscv-collab/riscv-qemu.git",
+#                 "git submodule update --init",
+#             ]
+#             for cmd in cmds:
+#                 p = Popen(shlex.split(cmd))
+#                 p.wait()
+#                 p.communicate()
+            
+#             # modify Makefile not to git init submodules.
+#             cmd = "/bin/sed -i.bak -r \
+#             '/^# Rule for auto init submodules/,/git submodule update.*$/d' \
+#             Makefile"
+#             p = Popen(shlex.split(cmd))
+#             p.wait()
+#             p.communicate()
 
             params = []
             if self.spec.satisfies("compiler_type=linux"):
