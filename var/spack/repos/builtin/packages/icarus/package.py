@@ -12,7 +12,7 @@ class Icarus(AutotoolsPackage):
     homepage = "http://www.iverilog.icarus.com"
     url = "https://github.com/steveicarus/iverilog/archive/refs/tags/v12_0.tar.gz"
     git = "https://github.com/steveicarus/iverilog.git"
-    
+
     maintainers("davekeeshan")
 
     version("master", branch="master")
@@ -47,12 +47,8 @@ class Icarus(AutotoolsPackage):
     @run_after("install")
     def patch_compiler(self):
         filter_file(
-            r"^CC\s*=.*",
-            f"CC={self.compiler.cc}",
-            join_path(self.prefix.bin, "iverilog-vpi"),
+            r"^CC\s*=.*", f"CC={self.compiler.cc}", join_path(self.prefix.bin, "iverilog-vpi")
         )
         filter_file(
-            r"^CXX\s*=.*",
-            f"CXX={self.compiler.cxx}",
-            join_path(self.prefix.bin, "iverilog-vpi"),
+            r"^CXX\s*=.*", f"CXX={self.compiler.cxx}", join_path(self.prefix.bin, "iverilog-vpi")
         )
