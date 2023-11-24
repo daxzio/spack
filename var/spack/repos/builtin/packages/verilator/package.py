@@ -64,9 +64,6 @@ class Verilator(AutotoolsPackage):
     version("4.200", sha256="2cd0fd48152f152d0487eaac23803d35ff75e924734435b366a523deb1185407")
     version("4.110", sha256="603c23944577a5d53a2e09191d04d5c61740a77b58f3a590a70e56f4526a5a0b")
     version("4.108", sha256="ce521dc57754e5a325ff7000c434ce23674c8e1de30e1f2a6506dc3a33bd7c55")
-    #     version("4.020", sha256="e19ccbaad305d7aa2a0e56fc1a1629c4db1b4abd7f4530b9c035ee715217f3f2")
-    #     version("3.920", sha256="9490496ad3deeef39a8b57d0e0474a8aee20732732c5aa458cc50a049c7c74e1")
-    #     version("3.904", sha256="a0100b6c620cdf96a968099b60ada8e183dec385483ece74f0936aebb1990d93")
 
     depends_on("autoconf", type="build")
     depends_on("automake", type="build")
