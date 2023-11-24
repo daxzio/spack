@@ -45,12 +45,15 @@ class Verilator(AutotoolsPackage):
 #     version("3.920", sha256="2b5c38aa432d0766a38475219f9548d64d18104ce8bdcb5d29e42f5da06943ff")
 #     version("3.904", sha256="ea95e08b2d70682ad42e6c2f5ba99f59b2e7b220791214076099cdf6b7a8c1cb")
 
+    maintainers("davekeeshan")
+
     depends_on("autoconf", type="build")
     depends_on("automake", type="build")
     depends_on("libtool", type="build")
     depends_on("help2man", type="build")
     depends_on("bison", type="build")
-    depends_on("flex")
+    depends_on("flex", type="build")
+    depends_on("ccache", type="build")
     depends_on("perl", type=("build", "run"))
     depends_on("bash", type="build")
 
