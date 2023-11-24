@@ -53,7 +53,7 @@ class Verilator(AutotoolsPackage):
     depends_on("help2man", type="build")
     depends_on("bison", type="build")
     depends_on("flex", type="build")
-    depends_on("ccache", type="build")
+    depends_on("ccache", type=("build", "run"))
     depends_on("perl", type=("build", "run"))
     depends_on("bash", type="build")
 
