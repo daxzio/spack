@@ -5,39 +5,38 @@
 
 from spack.package import *
 
+
 class Verible(Package):
-    """The Verible project’s main mission is to parse SystemVerilog 
-    (IEEE 1800-2017) (as standardized in the [SV-LRM]) for a wide variety of 
+    """The Verible project’s main mission is to parse SystemVerilog
+    (IEEE 1800-2017) (as standardized in the [SV-LRM]) for a wide variety of
     applications, including developer tools.
 
-    It was born out of a need to parse un-preprocessed source files, which is 
-    suitable for single-file applications like style-linting and formatting. 
-    In doing so, it can be adapted to parse preprocessed source files, which 
+    It was born out of a need to parse un-preprocessed source files, which is
+    suitable for single-file applications like style-linting and formatting.
+    In doing so, it can be adapted to parse preprocessed source files, which
     is what real compilers and toolchains require.
 
-    The spirit of the project is that no-one should ever have to develop a 
-    SystemVerilog parser for their own application, because developing a 
-    standard-compliant parser is an enormous task due to the syntactic 
-    complexity of the language. Verible’s parser is also regularly tested 
-    against an ever-growing suite of (tool-independent) language compliance 
+    The spirit of the project is that no-one should ever have to develop a
+    SystemVerilog parser for their own application, because developing a
+    standard-compliant parser is an enormous task due to the syntactic
+    complexity of the language. Verible’s parser is also regularly tested
+    against an ever-growing suite of (tool-independent) language compliance
     tests at https://symbiflow.github.io/sv-tests/.
 
-    A lesser (but notable) objective is that the language-agnostic components 
-    of Verible be usable for rapidly developing language support tools for 
+    A lesser (but notable) objective is that the language-agnostic components
+    of Verible be usable for rapidly developing language support tools for
     other languages."""
 
     homepage = "https://chipsalliance.github.io/verible"
     git = "https://github.com/chipsalliance/verible.git"
     url = "https://github.com/chipsalliance/verible/archive/refs/tags/v0.0-3430-g060bde0f.tar.gz"
-    
+
+    version("master", branch="master")
+
+    version("0.0.3430", sha256="580ab39c82da9f67523658c0bb0859e2b6c662f7c06855859f476eeedd92a7e0")
+    version("0.0.3428", sha256="3a8e5aaeb81bf11f2c97f28fce49175989aab0cbeda859107d1fbdb054d039f8")
+
     maintainers("davekeeshan")
-
-    version(
-        "0.0-3430-g060bde0f", sha256="580ab39c82da9f67523658c0bb0859e2b6c662f7c06855859f476eeedd92a7e0")
-    version(
-        "0.0.3428", 
-        sha256="2b83497662b890f875bfe859175aa8e4b87db6e6a177ad08a0694002b8767cb0")
-
 
     depends_on("flex", type="build")
     depends_on("bison", type="build")
