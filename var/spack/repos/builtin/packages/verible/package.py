@@ -28,13 +28,16 @@ class Verible(Package):
 
     homepage = "https://chipsalliance.github.io/verible"
     git = "https://github.com/chipsalliance/verible.git"
+    url = "https://github.com/chipsalliance/verible/archive/refs/tags/v0.0-3430-g060bde0f.tar.gz"
+    
+    maintainers("davekeeshan")
 
     version(
-        "v0.0-3428-gcfcbb82b", 
-        sha256="2b83497662b890f875bfe859175aa8e4b87db6e6a177ad08a0694002b8767cb0", 
-        url = "https://github.com/chipsalliance/verible/archive/refs/tags/v0.0-3428-gcfcbb82b.tar.gz")
+        "0.0-3430-g060bde0f", sha256="580ab39c82da9f67523658c0bb0859e2b6c662f7c06855859f476eeedd92a7e0")
+    version(
+        "0.0.3428", 
+        sha256="2b83497662b890f875bfe859175aa8e4b87db6e6a177ad08a0694002b8767cb0")
 
-    maintainers("davekeeshan")
 
     depends_on("flex", type="build")
     depends_on("bison", type="build")
