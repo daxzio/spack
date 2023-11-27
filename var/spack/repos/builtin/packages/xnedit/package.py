@@ -43,7 +43,10 @@ class Xnedit(MakefilePackage):
 
     depends_on("automake")
     depends_on("libx11")
-
+    depends_on("libxt")
+    depends_on("motif")
+    depends_on("pcre")
+    
     def build(self, spec, prefix):
         make("linux")
 
