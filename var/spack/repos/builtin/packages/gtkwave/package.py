@@ -27,6 +27,7 @@ class Gtkwave(AutotoolsPackage):
     depends_on("libtool", type="build")
     depends_on("tcl", type="build")
     depends_on("tk", type="build")
+    depends_on("gperf", type="build")
 
     configure_directory = build_directory = "gtkwave3-gtk3"
 
