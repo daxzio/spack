@@ -13,7 +13,6 @@ class Gtkwave(AutotoolsPackage):
     """
 
     homepage = "https://gtkwave.sourceforge.net/"
-    #url = "https://sourceforge.net/projects/gtkwave/files/gtkwave-gtk3-3.3.117/gtkwave-gtk3-3.3.117.tar.gz"
     git = "https://github.com/gtkwave/gtkwave.git"
     url = "https://github.com/gtkwave/gtkwave/archive/refs/tags/v3.3.116.tar.gz"
 
@@ -34,8 +33,8 @@ class Gtkwave(AutotoolsPackage):
     def configure_args(self):
         args = []
     
-        args.append(f"--with-tcl={self.spec['tcl'].prefix.lib}")
-        args.append(f"--with-tk={self.spec['tk'].prefix.lib}")
+        args.append("--with-tcl={0}".format(self.spec['tcl'].prefix.lib))
+        args.append("--with-tk={0}".format(self.spec['tk'].prefix.lib))
         args.append("--enable-gtk3")
         args.append("--disable-mime-update")
 
