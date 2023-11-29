@@ -75,7 +75,6 @@ class Verilator(AutotoolsPackage):
     depends_on("perl", type=("build", "run"))
     depends_on("bash", type="build")
 
-    # C++14 support
     conflicts("%gcc@:4.8", msg="C++14 support required")
 
     # we need to fix the CXX and LINK paths, as they point to the spack
