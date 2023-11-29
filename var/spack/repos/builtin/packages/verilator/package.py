@@ -75,7 +75,7 @@ class Verilator(AutotoolsPackage):
     depends_on("perl", type=("build", "run"))
     depends_on("bash", type="build")
 
-    conflicts("%gcc@:5", msg="C++14 support required")
+    conflicts("%gcc@:6", msg="C++14 support required")
 
     # we need to fix the CXX and LINK paths, as they point to the spack
     # wrapper scripts which aren't usable without spack
