@@ -29,12 +29,19 @@ class Verible(Package):
 
     homepage = "https://chipsalliance.github.io/verible"
     git = "https://github.com/chipsalliance/verible.git"
-    url = "https://github.com/chipsalliance/verible/archive/refs/tags/v0.0-3430-g060bde0f.tar.gz"
 
     version("master", branch="master")
 
-    version("0.0.3430", sha256="580ab39c82da9f67523658c0bb0859e2b6c662f7c06855859f476eeedd92a7e0", "https://github.com/chipsalliance/verible/archive/refs/tags/v0.0-3430-g060bde0f.tar.gz")
-    version("0.0.3428", sha256="3a8e5aaeb81bf11f2c97f28fce49175989aab0cbeda859107d1fbdb054d039f8", "https://github.com/chipsalliance/verible/archive/refs/tags/v0.0-3428-gcfcbb82b.tar.gz")
+    version(
+        "0.0.3430",
+        sha256="580ab39c82da9f67523658c0bb0859e2b6c662f7c06855859f476eeedd92a7e0",
+        url="https://github.com/chipsalliance/verible/archive/refs/tags/v0.0-3430-g060bde0f.tar.gz",
+    )
+    version(
+        "0.0.3428",
+        sha256="3a8e5aaeb81bf11f2c97f28fce49175989aab0cbeda859107d1fbdb054d039f8",
+        url="https://github.com/chipsalliance/verible/archive/refs/tags/v0.0-3428-gcfcbb82b.tar.gz",
+    )
 
     maintainers("davekeeshan")
 
