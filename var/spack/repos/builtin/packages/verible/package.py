@@ -42,6 +42,8 @@ class Verible(Package):
     depends_on("bison", type="build")
     depends_on("bazel", type="build")
 
+    conflicts("%gcc@:8", msg="Only works with gcc9 and above")
+
     def install(self, spec, prefix):
         bazel("build", "-c", "opt", "//...")
         bazel("run", "-c", "opt", ":install", "--", prefix.bin)
