@@ -23,19 +23,21 @@ class Yosys(MakefilePackage):
     url = "https://github.com/YosysHQ/yosys/archive/refs/tags/yosys-0.34.tar.gz"
     git = "https://github.com/YosysHQ/yosys.git"
 
-#     version("0.5",  sha256="f2adb8115f95e9613838fc545bad94dcfe7c8afcfb092595c1b6996f81eadfac")
-    version("0.20", sha256="ee261487badf1b554616d555da8496a7c84ef21ae66a979ddd946b6949a780a4")
     version("0.34", sha256="57897bc3fe5fdc940e9f3f3ae03b84f5f8e9149b6f26d3699f7ecb9f31a41ae0")
+    version("0.20", sha256="ee261487badf1b554616d555da8496a7c84ef21ae66a979ddd946b6949a780a4")
+#     version("0.5",  sha256="f2adb8115f95e9613838fc545bad94dcfe7c8afcfb092595c1b6996f81eadfac")
 
-    depends_on("automake")
+    depends_on("automake", type="build")
     depends_on("readline")
     depends_on("pkg-config")
     depends_on("tcl")
+    depends_on("zlib")
     depends_on("llvm")
+#     depends_on("clang")
 
     def edit(self, spec, prefix):
         env['PREFIX'] = prefix
-        env['LDFLAGS']  = f"-L${spec['readline'].prefix.lib}"
-        env['CFLAGS']   = f"-I${spec['readline'].prefix}/include"
-        env['CXXFLAGS'] = f"-I${spec['readline'].prefix}/include"
+        env['LDFLAGS']  = f"-L${spec['readline'].prefix.lib} -L${spec['zlib'].prefix.lib}"
+        #env['CFLAGS']   = f"-I${spec['readline'].prefix.include}"
+        env['CXXFLAGS'] = f"-I${spec['readline'].prefix.include}"
 
