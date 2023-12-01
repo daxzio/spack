@@ -38,6 +38,7 @@ class Yosys(MakefilePackage):
         env.set("PREFIX", self.prefix)
         env.set("CXXFLAGS", "-I{0}".format(self.spec['readline'].prefix.include))
         env.set("LDFLAGS", "-L{0} -L{1}".format(self.spec['readline'].prefix.lib, self.spec['zlib'].prefix.lib))
+        env.set("ENABLE_ABC", "0")
 
 #     def edit(self, spec, prefix):
 #         env['PREFIX'] = prefix
