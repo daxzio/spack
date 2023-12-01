@@ -36,9 +36,10 @@ class Yosys(MakefilePackage):
 #     depends_on("clang")
 
     def setup_build_environment(self, env):
-        env.prepend_path("LDFLAGS", f"-L${spec['readline'].prefix.lib}")
+        env.set("PREFIX", prefix)
+        env.set("CXXFLAGS", f"-I${spec['readline'].prefix.include}")
+        env.set("LDFLAGS", f"-L${spec['readline'].prefix.lib}")
         env.prepend_path("LDFLAGS", f"-L${spec['zlib'].prefix.lib}")
-        env.prepend_path("CXXFLAGS", f"-I${spec['readline'].prefix.include}")
 
 #     def edit(self, spec, prefix):
 #         env['PREFIX'] = prefix
