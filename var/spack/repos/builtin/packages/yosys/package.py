@@ -7,15 +7,15 @@ from spack.package import *
 
 
 class Yosys(MakefilePackage):
-    """Yosys is a framework for RTL synthesis tools. It currently has extensive 
-    Verilog-2005 support and provides a basic set of synthesis algorithms for 
+    """Yosys is a framework for RTL synthesis tools. It currently has extensive
+    Verilog-2005 support and provides a basic set of synthesis algorithms for
     various application domains.
 
-    Yosys can be adapted to perform any synthesis job by combining the existing 
-    passes (algorithms) using synthesis scripts and adding additional passes 
+    Yosys can be adapted to perform any synthesis job by combining the existing
+    passes (algorithms) using synthesis scripts and adding additional passes
     as needed by extending the yosys C++ code base.
 
-    Yosys is free software licensed under the ISC license (a GPL compatible 
+    Yosys is free software licensed under the ISC license (a GPL compatible
     license that is similar in terms to the MIT license or the 2-clause BSD license).
     """
 
@@ -37,7 +37,9 @@ class Yosys(MakefilePackage):
 
     def setup_build_environment(self, env):
         env.set("PREFIX", self.prefix)
-        env.set("CXXFLAGS", "-I{0}".format(self.spec['readline'].prefix.include))
-        env.set("LDFLAGS", "-L{0} -L{1}".format(self.spec['readline'].prefix.lib, self.spec['zlib'].prefix.lib))
-        env.set("ABC_READLINE_INCLUDES", "-I{0}".format(self.spec['readline'].prefix.include))
-
+        env.set("CXXFLAGS", "-I{0}".format(self.spec["readline"].prefix.include))
+        env.set(
+            "LDFLAGS",
+            "-L{0} -L{1}".format(self.spec["readline"].prefix.lib, self.spec["zlib"].prefix.lib),
+        )
+        env.set("ABC_READLINE_INCLUDES", "-I{0}".format(self.spec["readline"].prefix.include))
