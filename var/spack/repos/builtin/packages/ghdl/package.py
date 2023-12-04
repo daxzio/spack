@@ -24,6 +24,7 @@ class Ghdl(AutotoolsPackage):
     variant("llvm", default=False, description="build with llvm support")
 
     depends_on("llvm@14", when="+llvm")
+    depends_on("gnat-fsf")
     
     #conflicts("%gcc@12:", when="+llvm")
 
