@@ -37,7 +37,7 @@ class Gtkwave4(MesonPackage):
     def meson_args(self):
         args = std_meson_args
         args.extend([
-            f"--prefix={self.prefix}",
+#             f"--prefix={self.prefix}",
             "-Dc_link_args='-ldl'",
             f"-Dc_args='-I{self.spec['zlib'].prefix.include} -I{self.spec['bzip2'].prefix.include}'",
         ])
