@@ -34,7 +34,8 @@ class Gtkwave4(MesonPackage):
     depends_on("desktop-file-utils", type="build")
     depends_on("gobject-introspection", type="build")
 
-    def configure_args(self):
+    def meson_args(self):
+        args = std_meson_args
         args = [
             f"--prefix={self.prefix}",
             "-Dc_link_args='-ldl'",
