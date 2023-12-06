@@ -25,7 +25,7 @@ class Gtkwave4(MesonPackage):
     depends_on("cmake", type="build")
     depends_on("gperf", type="build")
     depends_on("flex", type="build")
-    depends_on("gtkplus", type="build")
+    depends_on("gtkplus")
     depends_on("judy", type="build")
     depends_on("zlib", type="build")
     depends_on("bzip2", type="build")

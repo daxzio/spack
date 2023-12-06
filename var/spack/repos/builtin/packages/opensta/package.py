@@ -32,7 +32,7 @@ class Opensta(CMakePackage):
     # version("1.1.0", sha256="f0be81afe643adc2452055e5485f09cdb509a8fdd5a4ec5547b0c31dd22b4830")
 
     depends_on("flex", type="build")
-    depends_on("tcl@8.6.11", type=("build", "run"))
+    depends_on("tcl@8.6.11", type="build")
     depends_on("swig", type="build")
     depends_on("zlib", type="build")
     depends_on("llvm")
