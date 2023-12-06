@@ -32,7 +32,7 @@ class Gtkwave4(MesonPackage):
     depends_on("tcl", type="build")
     depends_on("tk", type="build")
     depends_on("desktop-file-utils", type="build")
-    depends_on("gobject-introspection", type="build")
+    depends_on("gobject-introspection")
 
     def meson_args(self):
         args = std_meson_args
