@@ -30,16 +30,21 @@ class Opensta(CMakePackage):
     version("master", branch="master")
 
     # version("1.1.0", sha256="f0be81afe643adc2452055e5485f09cdb509a8fdd5a4ec5547b0c31dd22b4830")
+    variant("cudd", default=False, description="build with cudd support")
 
     depends_on("flex", type="build")
     depends_on("tcl@8.6.11", type="build")
     depends_on("swig", type="build")
     depends_on("zlib", type="build")
     depends_on("llvm")
-
-    # spack load gcc@8.4.0 llvm@17.0.4%gcc@8.4.0 git%gcc@8.4.0 cmake%gcc@8.4.0 flex%gcc@8.4.0 tcl@8.6.11%gcc@8.4.0 swig%gcc@8.4.0 zlib-ng%gcc@8.4.0 zlib%gcc@8.4.0
+    depends_on("cudd", type="build", when="+cudd")
 
     def cmake_args(self):
-        args = [f"-DCMAKE_CXX_FLAGS=-I{self.spec['zlib'].prefix.include}"]
+        args = []
+        # args.append(f"-DCMAKE_CXX_FLAGS=-I{self.spec['zlib'].prefix.include}")
+        args.append(f"-DZLIB_ROOT=-{self.spec['zlib'].prefix}")
+        if self.spec.satisfies("+cudd"):
+            args.append("-DUSE_CUDD=ON ")
+            args.append(f"-DCUDD_DIR={self.spec['cudd'].prefix}")
 
         return args
