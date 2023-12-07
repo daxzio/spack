@@ -41,7 +41,7 @@ class Opensta(CMakePackage):
     def cmake_args(self):
         args = []
         if self.spec.satisfies("+zlib"):
-            args.append(f"-DZLIB_ROOT=-{self.spec['zlib'].prefix}")
+            args.append(f"-DZLIB_ROOT={self.spec['zlib'].prefix}")
         if self.spec.satisfies("+cudd"):
             args.append("-DUSE_CUDD=ON ")
             args.append(f"-DCUDD_DIR={self.spec['cudd'].prefix}")
