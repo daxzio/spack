@@ -49,7 +49,8 @@ class Yosys(MakefilePackage):
     variant("ccache", default=False, description="build with ccache support")
 
     depends_on("automake", type="build")
-    depends_on("binutils+ld")
+#     depends_on("binutils+ld", when="os=rhel8")
+#     depends_on("binutils+ld", when="os=rocky8")
     depends_on("flex")
     depends_on("bison")
     depends_on("libffi")
