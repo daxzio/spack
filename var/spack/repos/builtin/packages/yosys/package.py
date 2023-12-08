@@ -58,7 +58,7 @@ class Yosys(MakefilePackage):
     depends_on("pkg-config")
     depends_on("tcl")
     depends_on("zlib")
-    depends_on("llvm")
+    depends_on("llvm~binutils")
     depends_on("ccache", type=("build", "run"), when="+ccache")
 
     def edit(self, spec, prefix):
