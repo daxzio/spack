@@ -49,8 +49,6 @@ class Yosys(MakefilePackage):
     variant("ccache", default=False, description="build with ccache support")
 
     depends_on("automake", type="build")
-#     depends_on("binutils+ld", when="os=rhel8")
-#     depends_on("binutils+ld", when="os=rocky8")
     depends_on("flex")
     depends_on("bison")
     depends_on("libffi")
@@ -58,8 +56,14 @@ class Yosys(MakefilePackage):
     depends_on("pkg-config")
     depends_on("tcl")
     depends_on("zlib")
-    depends_on("llvm~binutils")
+    depends_on("llvm")
     depends_on("ccache", type=("build", "run"), when="+ccache")
+
+    def edit(self, spec, prefix):
+        makefile = FileFilter("Makefile")
+
+        makefile.filter(r"ENABLE_ABC :=", "ENABLE_ABC ?=")
+        makefile.filter(r"ENABLE_CCACHE :=", "ENABLE_CCACHE ?=")
 
     def edit(self, spec, prefix):
         makefile = FileFilter("Makefile")
