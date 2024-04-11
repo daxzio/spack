@@ -36,6 +36,8 @@ class Rust(Package):
     version("nightly")
 
     # Stable versions.
+    version("1.77.1", sha256="ee106e4c569f52dba3b5b282b105820f86bd8f6b3d09c06b8dce82fb1bb3a4a1")
+    version("1.77.0", sha256="0d6ccd1fa845fe3456b9ed4d483fc06acf9bbae9417e396b5144488c1a522d87")
     version("1.76.0", sha256="9e5cff033a7f0d2266818982ad90e4d3e4ef8f8ee1715776c6e25073a136c021")
     version("1.75.0", sha256="5b739f45bc9d341e2d1c570d65d2375591e22c2d23ef5b8a37711a0386abc088")
     version("1.74.0", sha256="882b584bc321c5dcfe77cdaa69f277906b936255ef7808fcd5c7492925cf1049")
@@ -78,6 +80,8 @@ class Rust(Package):
     depends_on("rust-bootstrap@1.72:1.73", type="build", when="@1.73")
     depends_on("rust-bootstrap@1.73:1.74", type="build", when="@1.74")
     depends_on("rust-bootstrap@1.74:1.75", type="build", when="@1.75")
+    depends_on("rust-bootstrap@1.75:1.76", type="build", when="@1.76")
+    depends_on("rust-bootstrap@1.76:1.77", type="build", when="@1.77")
 
     extendable = True
     executables = ["^rustc$", "^cargo$"]
