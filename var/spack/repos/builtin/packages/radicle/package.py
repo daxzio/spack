@@ -28,6 +28,7 @@ class Radicle(Package):
 
     version("master", branch="master")
 #     version("0.8.0", commit="f15afa84be7bda050bfb93e321bbce28b56d10b6")
+    version("1.0.0-rc.9", commit="d56d619f")
     version("1.0.0-rc.8", commit="0d880e12")
     version("1.0.0-rc.7", commit="9cd08a01")
     version("1.0.0-rc.6", commit="7126d051")
