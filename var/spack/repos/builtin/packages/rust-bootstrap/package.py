@@ -16,20 +16,22 @@ class RustBootstrap(Package):
 
     maintainers("alecbcs")
 
+    skip_version_audit = ["platform=windows"]
+
     # List binary rust releases for multiple operating systems and architectures.
     # These binary versions are not intended to stay up-to-date. Instead we
     # should update these binary releases as bootstrapping requirements are
     # modified by new releases of Rust.
     rust_releases = {
-        "1.76.0": {
+        "1.78.0": {
             "darwin": {
-                "x86_64": "fd066e4dec7ae5948c4e7afe68e250c336a5ab3d655570bb119b3eba9cf22851",
-                "aarch64": "f78ecf81e059507dd2ab256f59629a4fb00171035d2a2f5638cb582d999373b1",
+                "x86_64": "6c91ed3bd90253961fcb4a2991b8b22e042e2aaa9aba9f389f1e17008171d898",
+                "aarch64": "3be74c31ee8dc4f1d49e2f2888228de374138eaeca1876d0c1b1a61df6023b3b",
             },
             "linux": {
-                "x86_64": "9d589d2036b503cc45ecc94992d616fb3deec074deb36cacc2f5c212408f7399",
-                "aarch64": "f0828cd904fcfb47f1ac43627c7033c903889ea4aca538f53dcafbb3744a9a73",
-                "powerpc64le": "f599cdfea5860b4efbceb7bca69845a96ac1c96aa50cf8261151e82280b397a0",
+                "x86_64": "1307747915e8bd925f4d5396ab2ae3d8d9c7fad564afbc358c081683d0f22e87",
+                "aarch64": "131eda738cd977fff2c912e5838e8e9b9c260ecddc1247c0fe5473bf09c594af",
+                "powerpc64le": "c5aedb12c552daa18072e386697205fb7b91cef1e8791fe6fb74834723851388",
             },
         },
         "1.75.0": {
@@ -121,6 +123,9 @@ class RustBootstrap(Package):
             version(release, sha256=rust_releases[release][os][target])
 
     def url_for_version(self, version):
+        if self.os not in ("linux", "darwin"):
+            return None
+
         # Allow maintainers to checksum multiple architectures via
         # `spack checksum rust-bootstrap@1.70.0-darwin-aarch64`.
         match = re.search(r"(\S+)-(\S+)-(\S+)", str(version))
