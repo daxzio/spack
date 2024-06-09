@@ -45,16 +45,16 @@ class DocbookXml(Package):
             "--noout",
             "--add",
             "public",
-            "-//OASIS//DTD DocBook XML CALS Table Model " "V{0}//EN".format(version),
-            "file://{0}/calstblx.dtd".format(prefix),
+            f"-//OASIS//DTD DocBook XML CALS Table Model V{version}//EN",
+            f"file://{prefix}/calstblx.dtd",
             docbook,
         )
         xmlcatalog(
             "--noout",
             "--add",
             "public",
-            "-//OASIS//DTD DocBook XML V{0}//EN".format(version),
-            "file://{0}/docbookx.dtd".format(prefix),
+            f"-//OASIS//DTD DocBook XML V{version}//EN",
+            f"file://{prefix}/docbookx.dtd",
             docbook,
         )
         xmlcatalog(
@@ -62,15 +62,15 @@ class DocbookXml(Package):
             "--add",
             "public",
             "-//OASIS//DTD XML Exchange Table Model 19990315//EN",
-            "file://{0}/soextblx.dtd".format(prefix),
+            f"file://{prefix}/soextblx.dtd",
             docbook,
         )
         xmlcatalog(
             "--noout",
             "--add",
             "public",
-            "-//OASIS//ENTITIES DocBook XML Character Entities " "V{0}//EN".format(version),
-            "file://{0}/dbcentx.mod".format(prefix),
+            f"-//OASIS//ENTITIES DocBook XML Character Entities V{version}//EN",
+            f"file://{prefix}/dbcentx.mod",
             docbook,
         )
         xmlcatalog(
@@ -79,39 +79,39 @@ class DocbookXml(Package):
             "public",
             "-//OASIS//ENTITIES DocBook XML Additional General Entities "
             "V{0}//EN".format(version),
-            "file://{0}/dbgenent.mod".format(prefix),
+            f"file://{prefix}/dbgenent.mod",
             docbook,
         )
         xmlcatalog(
             "--noout",
             "--add",
             "public",
-            "-//OASIS//ELEMENTS DocBook XML Document Hierarchy " "V{0}//EN".format(version),
-            "file://{0}/dbhierx.mod".format(prefix),
+            f"-//OASIS//ELEMENTS DocBook XML Document Hierarchy V{version}//EN",
+            f"file://{prefix}/dbhierx.mod",
             docbook,
         )
         xmlcatalog(
             "--noout",
             "--add",
             "public",
-            "-//OASIS//ENTITIES DocBook XML Notations " "V{0}//EN".format(version),
-            "file://{0}/dbnotnx.mod".format(prefix),
+            f"-//OASIS//ENTITIES DocBook XML Notations V{version}//EN",
+            f"file://{prefix}/dbnotnx.mod",
             docbook,
         )
         xmlcatalog(
             "--noout",
             "--add",
             "public",
-            "-//OASIS//ELEMENTS DocBook XML Information Pool " "V{0}//EN".format(version),
-            "file://{0}/dbpoolx.mod".format(prefix),
+            f"-//OASIS//ELEMENTS DocBook XML Information Pool V{version}//EN",
+            f"file://{prefix}/dbpoolx.mod",
             docbook,
         )
         xmlcatalog(
             "--noout",
             "--add",
             "public",
-            "-//OASIS//ELEMENTS DocBook XML HTML Tables " "V{0}//EN".format(version),
-            "file://{0}/htmltblx.mod".format(prefix),
+            f"-//OASIS//ELEMENTS DocBook XML HTML Tables V{version}//EN",
+            f"file://{prefix}/htmltblx.mod",
             docbook,
         )
         xmlcatalog(
@@ -119,7 +119,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Added Math Symbols: Arrow " "Relations//EN",
-            "file://{0}/isoamsa.ent".format(ent_dir),
+            f"file://{ent_dir}/isoamsa.ent",
             docbook,
         )
         xmlcatalog(
@@ -127,7 +127,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Added Math Symbols: Binary " "Operators//EN",
-            "file://{0}/isoamsb.ent".format(ent_dir),
+            f"file://{ent_dir}/isoamsb.ent",
             docbook,
         )
         xmlcatalog(
@@ -135,7 +135,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Added Math Symbols: Delimiters//EN",
-            "file://{0}/isoamsc.ent".format(ent_dir),
+            f"file://{ent_dir}/isoamsc.ent",
             docbook,
         )
         xmlcatalog(
@@ -143,7 +143,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Added Math Symbols: " "Negated Relations//EN",
-            "file://{0}/isoamsn.ent".format(ent_dir),
+            f"file://{ent_dir}/isoamsn.ent",
             docbook,
         )
         xmlcatalog(
@@ -151,7 +151,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Added Math Symbols: Ordinary//EN",
-            "file://{0}/isoamso.ent".format(ent_dir),
+            f"file://{ent_dir}/isoamso.ent",
             docbook,
         )
         xmlcatalog(
@@ -159,7 +159,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Added Math Symbols: Relations//EN",
-            "file://{0}/isoamsr.ent".format(ent_dir),
+            f"file://{ent_dir}/isoamsr.ent",
             docbook,
         )
         xmlcatalog(
@@ -167,7 +167,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Box and Line Drawing//EN",
-            "file://{0}/isobox.ent".format(ent_dir),
+            f"file://{ent_dir}/isobox.ent",
             docbook,
         )
         xmlcatalog(
@@ -175,7 +175,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Russian Cyrillic//EN",
-            "file://{0}/isocyr1.ent".format(ent_dir),
+            f"file://{ent_dir}/isocyr1.ent",
             docbook,
         )
         xmlcatalog(
@@ -183,7 +183,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Non-Russian Cyrillic//EN",
-            "file://{0}/isocyr2.ent".format(ent_dir),
+            f"file://{ent_dir}/isocyr2.ent",
             docbook,
         )
         xmlcatalog(
@@ -191,7 +191,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Diacritical Marks//EN",
-            "file://{0}/isodia.ent".format(ent_dir),
+            f"file://{ent_dir}/isodia.ent",
             docbook,
         )
         xmlcatalog(
@@ -199,7 +199,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Greek Letters//EN",
-            "file://{0}/isogrk1.ent".format(ent_dir),
+            f"file://{ent_dir}/isogrk1.ent",
             docbook,
         )
         xmlcatalog(
@@ -207,7 +207,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Monotoniko Greek//EN",
-            "file://{0}/isogrk2.ent".format(ent_dir),
+            f"file://{ent_dir}/isogrk2.ent",
             docbook,
         )
         xmlcatalog(
@@ -215,7 +215,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Greek Symbols//EN",
-            "file://{0}/isogrk3.ent".format(ent_dir),
+            f"file://{ent_dir}/isogrk3.ent",
             docbook,
         )
         xmlcatalog(
@@ -223,7 +223,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Alternative Greek Symbols//EN",
-            "file://{0}/isogrk4.ent".format(ent_dir),
+            f"file://{ent_dir}/isogrk4.ent",
             docbook,
         )
         xmlcatalog(
@@ -231,7 +231,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Added Latin 1//EN",
-            "file://{0}/isolat1.ent".format(ent_dir),
+            f"file://{ent_dir}/isolat1.ent",
             docbook,
         )
         xmlcatalog(
@@ -239,7 +239,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Added Latin 2//EN",
-            "file://{0}/isolat2.ent".format(ent_dir),
+            f"file://{ent_dir}/isolat2.ent",
             docbook,
         )
         xmlcatalog(
@@ -247,7 +247,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Numeric and Special Graphic//EN",
-            "file://{0}/isonum.ent".format(ent_dir),
+            f"file://{ent_dir}/isonum.ent",
             docbook,
         )
         xmlcatalog(
@@ -255,7 +255,7 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES Publishing//EN",
-            "file://{0}/isopub.ent".format(ent_dir),
+            f"file://{ent_dir}/isopub.ent",
             docbook,
         )
         xmlcatalog(
@@ -263,23 +263,23 @@ class DocbookXml(Package):
             "--add",
             "public",
             "ISO 8879:1986//ENTITIES General Technical//EN",
-            "file://{0}/isotech.ent".format(ent_dir),
+            f"file://{ent_dir}/isotech.ent",
             docbook,
         )
         xmlcatalog(
             "--noout",
             "--add",
             "rewriteSystem",
-            "https://www.oasis-open.org/docbook/xml/{0}".format(version),
-            "file://{0}".format(prefix),
+            f"https://www.oasis-open.org/docbook/xml/{version}",
+            f"file://{prefix}",
             docbook,
         )
         xmlcatalog(
             "--noout",
             "--add",
             "rewriteURI",
-            "https://www.oasis-open.org/docbook/xml/{0}".format(version),
-            "file://{0}".format(prefix),
+            f"https://www.oasis-open.org/docbook/xml/{version}",
+            f"file://{prefix}",
             docbook,
         )
         xmlcatalog(
@@ -287,7 +287,7 @@ class DocbookXml(Package):
             "--add",
             "rewriteSystem",
             "https://www.oasis-open.org/docbook/xml/current",
-            "file://{0}".format(prefix),
+            f"file://{prefix}",
             docbook,
         )
         xmlcatalog(
@@ -295,7 +295,7 @@ class DocbookXml(Package):
             "--add",
             "rewriteURI",
             "https://www.oasis-open.org/docbook/xml/current",
-            "file://{0}".format(prefix),
+            f"file://{prefix}",
             docbook,
         )
 
@@ -306,7 +306,7 @@ class DocbookXml(Package):
             "--add",
             "delegatePublic",
             "-//OASIS//ENTITIES DocBook XML",
-            "file://{0}".format(docbook),
+            f"file://{docbook}",
             catalog,
         )
         xmlcatalog(
@@ -314,23 +314,18 @@ class DocbookXml(Package):
             "--add",
             "delegatePublic",
             "-//OASIS//DTD DocBook XML",
-            "file://{0}".format(docbook),
+            f"file://{docbook}",
             catalog,
         )
         xmlcatalog(
-            "--noout",
-            "--add",
-            "delegatePublic",
-            "ISO 8879:1986",
-            "file://{0}".format(docbook),
-            catalog,
+            "--noout", "--add", "delegatePublic", "ISO 8879:1986", f"file://{docbook}", catalog
         )
         xmlcatalog(
             "--noout",
             "--add",
             "delegateSystem",
             "https://www.oasis-open.org/docbook/",
-            "file://{0}".format(docbook),
+            f"file://{docbook}",
             catalog,
         )
         xmlcatalog(
@@ -338,7 +333,7 @@ class DocbookXml(Package):
             "--add",
             "delegateURI",
             "https://www.oasis-open.org/docbook/",
-            "file://{0}".format(docbook),
+            f"file://{docbook}",
             catalog,
         )
 
@@ -349,40 +344,40 @@ class DocbookXml(Package):
                 "--noout",
                 "--add",
                 "public",
-                "-//OASIS//DTD DocBook XML V{0}//EN".format(dtversion),
-                "http://www.oasis-open.org/docbook/xml/{0}/docbookx.dtd".format(dtversion),
+                f"-//OASIS//DTD DocBook XML V{dtversion}//EN",
+                f"http://www.oasis-open.org/docbook/xml/{dtversion}/docbookx.dtd",
                 docbook,
             )
             xmlcatalog(
                 "--noout",
                 "--add",
                 "rewriteSystem",
-                "http://www.oasis-open.org/docbook/xml/{0}".format(dtversion),
-                "file://{0}".format(prefix),
+                f"http://www.oasis-open.org/docbook/xml/{dtversion}",
+                f"file://{prefix}",
                 docbook,
             )
             xmlcatalog(
                 "--noout",
                 "--add",
                 "rewriteURI",
-                "http://www.oasis-open.org/docbook/xml/{0}".format(dtversion),
-                "file://{0}".format(prefix),
+                f"http://www.oasis-open.org/docbook/xml/{dtversion}",
+                f"file://{prefix}",
                 docbook,
             )
             xmlcatalog(
                 "--noout",
                 "--add",
                 "delegateSystem",
-                "http://www.oasis-open.org/docbook/xml/{0}".format(dtversion),
-                "file://{0}".format(docbook),
+                f"http://www.oasis-open.org/docbook/xml/{dtversion}",
+                f"file://{docbook}",
                 catalog,
             )
             xmlcatalog(
                 "--noout",
                 "--add",
                 "delegateURI",
-                "http://www.oasis-open.org/docbook/xml/{0}".format(dtversion),
-                "file://{0}".format(docbook),
+                f"http://www.oasis-open.org/docbook/xml/{dtversion}",
+                f"file://{docbook}",
                 catalog,
             )
 
