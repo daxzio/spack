@@ -196,6 +196,9 @@ class VtkM(CMakePackage, CudaPackage, ROCmPackage):
                 # vtk-m detectes tbb via TBB_ROOT env var
                 os.environ["TBB_ROOT"] = spec["tbb"].prefix
 
+            if "+kokkos" in spec and "+rocm" in spec and spec.satisfies("^kokkos@4:"):
+                options.append(f"-DCMAKE_CXX_COMPILER:BOOL={spec['hip'].prefix.bin.hipcc}")
+
             # Support for relocatable code
             if "~shared" in spec and "+fpic" in spec:
                 options.append("-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON")
@@ -230,14 +233,12 @@ class VtkM(CMakePackage, CudaPackage, ROCmPackage):
 
         return options
 
-    # Delegate in the vtk-m built smoke test
-    def smoke_test(self):
+    def test_smoke_test(self):
+        """Build and run ctests"""
         spec = self.spec
 
         if "+examples" not in spec:
-            raise RuntimeError(
-                "Examples needed for smoke test missing", "reinstall with `+examples` variant"
-            )
+            raise SkipTest("Package must be installed with +examples")
 
         testdir = "smoke_test_build"
         with working_dir(testdir, create=True):
@@ -252,7 +253,4 @@ class VtkM(CMakePackage, CudaPackage, ROCmPackage):
     @run_after("install")
     @on_package_attributes(run_tests=True)
     def build_test(self):
-        self.smoke_test()
-
-    def test(self):
-        self.smoke_test()
+        self.test_smoke_test()
