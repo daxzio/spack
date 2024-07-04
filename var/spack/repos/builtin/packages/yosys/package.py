@@ -27,7 +27,7 @@ class Yosys(MakefilePackage):
 
     license("ISC")
 
-    version("master", branch="master")
+    version("main", branch="main")
 
     version("0.42", commit="9b6afcf3f83fea413b57c3790c25ba43b9914ce2", submodules=True)
     version("0.41", sha256="b0037d0a5864550a07a72ba81346e52a7d5f76b3027ef1d7c71b975d2c8bd2b2")
