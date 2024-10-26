@@ -64,10 +64,10 @@ class Yosys(MakefilePackage):
     depends_on("flex", type="build")
     depends_on("bison", type="build")
     depends_on("libffi", type="build")
-    depends_on("readline", type=("build", "run"))
+    depends_on("readline", type=("build", "link", "run"))
     depends_on("pkgconfig", type="build")
     depends_on("tcl", type=("build", "run"))
-    depends_on("zlib", type="build")
+    depends_on("zlib", type=("build", "link"))
     depends_on("llvm", type="build")
     depends_on("ccache", type=("build", "run"), when="+ccache")
     
