@@ -8,7 +8,8 @@ from spack.package import *
 
 
 class Libgpiod(AutotoolsPackage):
-    """C library and tools for interacting with the linux GPIO character device (gpiod stands for GPIO device)"""
+    """C library and tools for interacting with the linux GPIO character device
+    (gpiod stands for GPIO device)"""
 
     homepage = "https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git/about/"
     url = (
