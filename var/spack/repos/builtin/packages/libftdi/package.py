@@ -3,13 +3,11 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-import os
-
 from spack.package import *
 
 
 class Libftdi(CMakePackage):
-    """libftdi - A library (using libusb) to talk to FTDI's UART/FIFO chips 
+    """libftdi - A library (using libusb) to talk to FTDI's UART/FIFO chips
     including the popular bitbang mode"""
 
     homepage = "https://www.intra2net.com/en/developer/libftdi/index.php"
