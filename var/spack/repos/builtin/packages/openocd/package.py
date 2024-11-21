@@ -48,8 +48,7 @@ class Openocd(AutotoolsPackage):
         args = []
 
         if spec.satisfies("+remotebitbang"):
-            args.append("--remote-bitbang")
-        args.extend(self.enable_or_disable("remote-bitbang"))
+            args.append("--enable-remote-bitbang")
         args.extend(self.enable_or_disable("ftdi"))
         args.extend(self.enable_or_disable("linuxgpiod"))
         args.extend(self.enable_or_disable("bcm2835gpio"))
