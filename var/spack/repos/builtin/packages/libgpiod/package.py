@@ -48,6 +48,7 @@ class Libgpiod(AutotoolsPackage):
     depends_on("c", type="build")  # generated
     depends_on("cxx", type="build")  # generated
 
+    depends_on("autoconf", type="build")
     depends_on("autoconf-archive", type="build")
     depends_on("automake", type="build")
     depends_on("pkgconfig", type="build")
