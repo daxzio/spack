@@ -29,6 +29,8 @@ class GobjectIntrospection(MesonPackage, AutotoolsPackage):
     version("1.49.2", sha256="73d59470ba1a546b293f54d023fd09cca03a951005745d86d586b9e3a8dde9ac")
     version("1.48.0", sha256="fa275aaccdbfc91ec0bc9a6fd0562051acdba731e7d584b64a277fec60e75877")
 
+    depends_on("c", type="build")  # generated
+
     build_system(
         conditional("autotools", when="@:1.60"),
         conditional("meson", when="@1.61:"),
@@ -104,6 +106,7 @@ class GobjectIntrospection(MesonPackage, AutotoolsPackage):
         # Only needed for sbang.patch above
         if self.spec.satisfies("@:1.60"):
             env.set("SPACK_SBANG", sbang.sbang_install_path())
+        env.set("GI_SCANNER_DISABLE_CACHE", "1")
 
     def setup_run_environment(self, env):
         env.prepend_path("GI_TYPELIB_PATH", join_path(self.prefix.lib, "girepository-1.0"))
@@ -111,6 +114,7 @@ class GobjectIntrospection(MesonPackage, AutotoolsPackage):
     def setup_dependent_build_environment(self, env, dependent_spec):
         env.prepend_path("XDG_DATA_DIRS", self.prefix.share)
         env.prepend_path("GI_TYPELIB_PATH", join_path(self.prefix.lib, "girepository-1.0"))
+        env.set("GI_SCANNER_DISABLE_CACHE", "1")
 
     def setup_dependent_run_environment(self, env, dependent_spec):
         env.prepend_path("XDG_DATA_DIRS", self.prefix.share)

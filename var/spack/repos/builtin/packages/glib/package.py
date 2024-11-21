@@ -5,6 +5,8 @@
 
 import os.path
 
+import spack.build_systems.autotools
+import spack.build_systems.meson
 from spack.package import *
 from spack.util.environment import is_system_path
 
@@ -120,6 +122,9 @@ class Glib(MesonPackage, AutotoolsPackage):
         deprecated=True,
     )
 
+    depends_on("c", type="build")  # generated
+    depends_on("cxx", type="build")  # generated
+
     variant("libmount", default=False, description="Build with libmount support")
     variant(
         "tracing",
@@ -205,7 +210,7 @@ class Glib(MesonPackage, AutotoolsPackage):
         return find_libraries(["libglib*"], root=self.prefix, recursive=True)
 
 
-class BaseBuilder(metaclass=spack.builder.PhaseCallbacksMeta):
+class AnyBuilder(BaseBuilder):
     @property
     def dtrace_copy_path(self):
         return join_path(self.stage.source_path, "dtrace-copy")
@@ -285,24 +290,24 @@ class BaseBuilder(metaclass=spack.builder.PhaseCallbacksMeta):
             filter_file(pattern, repl, myfile, backup=False)
 
 
-class MesonBuilder(BaseBuilder, spack.build_systems.meson.MesonBuilder):
+class MesonBuilder(AnyBuilder, spack.build_systems.meson.MesonBuilder):
     def meson_args(self):
         args = []
         if self.spec.satisfies("@2.63.5:"):
-            if "+libmount" in self.spec:
+            if self.spec.satisfies("+libmount"):
                 args.append("-Dlibmount=enabled")
             else:
                 args.append("-Dlibmount=disabled")
         else:
-            if "+libmount" in self.spec:
+            if self.spec.satisfies("+libmount"):
                 args.append("-Dlibmount=true")
             else:
                 args.append("-Dlibmount=false")
-        if "tracing=dtrace" in self.spec:
+        if self.spec.satisfies("tracing=dtrace"):
             args.append("-Ddtrace=true")
         else:
             args.append("-Ddtrace=false")
-        if "tracing=systemtap" in self.spec:
+        if self.spec.satisfies("tracing=systemtap"):
             args.append("-Dsystemtap=true")
         else:
             args.append("-Dsystemtap=false")
@@ -327,10 +332,10 @@ class MesonBuilder(BaseBuilder, spack.build_systems.meson.MesonBuilder):
         return args
 
 
-class AutotoolsBuilder(BaseBuilder, spack.build_systems.autotools.AutotoolsBuilder):
+class AutotoolsBuilder(AnyBuilder, spack.build_systems.autotools.AutotoolsBuilder):
     def configure_args(self):
         args = []
-        if "+libmount" in self.spec:
+        if self.spec.satisfies("+libmount"):
             args.append("--enable-libmount")
         else:
             args.append("--disable-libmount")
@@ -349,7 +354,7 @@ class AutotoolsBuilder(BaseBuilder, spack.build_systems.autotools.AutotoolsBuild
                 else:
                     args.append("--disable-" + value)
         else:
-            if "tracing=dtrace" in self.spec or "tracing=systemtap" in self.spec:
+            if self.spec.satisfies("tracing=dtrace") or self.spec.satisfies("tracing=systemtap"):
                 args.append("--enable-tracing")
             else:
                 args.append("--disable-tracing")
