@@ -35,7 +35,7 @@ class Openocd(AutotoolsPackage):
     depends_on("autoconf", type="build")
     depends_on("pkgconfig", type="build")
     depends_on("libtool", type="build")
-#     depends_on("libusb", type="build", when="+ftdi")
+    depends_on("libusb", type="build", when="+ftdi")
     depends_on("libftdi", type="build", when="+ftdi")
     depends_on("libgpiod@:1.6", type="build", when="+linuxgpiod")
 

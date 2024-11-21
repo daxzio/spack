@@ -8,7 +8,7 @@ import os
 from spack.package import *
 
 
-class Libftdi(MakefilePackage):
+class Libftdi(CMakePackage):
     """libftdi - A library (using libusb) to talk to FTDI's UART/FIFO chips 
     including the popular bitbang mode"""
 
@@ -27,22 +27,5 @@ class Libftdi(MakefilePackage):
     depends_on("c", type="build")  # generated
     depends_on("cxx", type="build")  # generated
 
-    depends_on("cmake", type="build")
-    depends_on("libconfuse", type="build")
     depends_on("libusb", type="build")
-
-    def build(self, spec, prefix):
-
-        mkdirp("./build")
-        os.chdir("./build")
-
-        cmake = which("cmake")
-        cmake(
-            f"-DCMAKE_INSTALL_PREFIX={prefix}",
-            "../",
-        )
-
-    def install(self, spec, prefix):
-        make()
-        make("install")
-
+    depends_on("libconfuse", type="build")
