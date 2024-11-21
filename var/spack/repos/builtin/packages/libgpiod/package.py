@@ -29,6 +29,7 @@ class Libgpiod(AutotoolsPackage):
 
     depends_on("autoconf-archive", type="build")
     depends_on("automake", type="build")
+    depends_on("pkgconfig", type="build")
     depends_on("libtool", type="build")
 
     def autoreconf(self, spec, prefix):
