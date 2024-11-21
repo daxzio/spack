@@ -26,7 +26,7 @@ class Openocd(AutotoolsPackage):
     depends_on("c", type="build")  # generated
     depends_on("cxx", type="build")  # generated
 
-    variant("remote-bitbang", default=False, description="build with remote bitbang support")
+    variant("remotebitbang", default=False, description="build with remote bitbang support")
     variant("ftdi", default=False, description="build with ftdi support")
     variant("linuxgpiod", default=False, description="build with linux gpio support")
     variant("bcm2835gpio", default=False, description="build with bcm2835gpio support")
@@ -47,6 +47,8 @@ class Openocd(AutotoolsPackage):
         spec = self.spec
         args = []
 
+        if spec.satisfies("+remotebitbang"):
+            args.append("--remote-bitbang")
         args.extend(self.enable_or_disable("remote-bitbang"))
         args.extend(self.enable_or_disable("ftdi"))
         args.extend(self.enable_or_disable("linuxgpiod"))
