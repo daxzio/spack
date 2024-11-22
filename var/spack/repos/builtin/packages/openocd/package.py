@@ -54,3 +54,6 @@ class Openocd(AutotoolsPackage):
         args.extend(self.enable_or_disable("bcm2835gpio"))
 
         return args
+
+    def setup_run_environment(self, env):
+        env.prepend_path("OPENOCD_SCRIPTS", f"{self.prefix}/share/openocd/scripts")
