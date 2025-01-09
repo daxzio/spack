@@ -21,6 +21,7 @@ class Openocd(AutotoolsPackage):
 
     version("master", branch="master")
 
+    version("2025.01.09", commit="d4b3b4ea82ba6d34b050a1cc068e0b105533e2f2", submodules=True)
     version("0.12.0", commit="9ea7f3d647c8ecf6b0f1424002dfc3f4504a162c", submodules=True)
 
     depends_on("c", type="build")  # generated

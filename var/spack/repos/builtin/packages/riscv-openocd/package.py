@@ -21,6 +21,7 @@ class RiscvOpenocd(AutotoolsPackage):
 
     version("master", branch="master")
 
+    version("2025.01.07", commit="c4ea6d18d003435c90c150e8acb511019591f2e8", submodules=True)
     version("2024.11.21", commit="1bf7efb2d5be792116bad3d0d7cfb812228d18ea", submodules=True)
     version("2018.12.0", commit="c3c76bfafa6612dc56b3914c9f93eb2a790ef87b", submodules=True)
 
