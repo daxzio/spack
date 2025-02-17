@@ -6,6 +6,7 @@ import collections.abc
 import copy
 import enum
 import functools
+import io
 import itertools
 import os
 import pathlib
@@ -73,17 +74,19 @@ TransformFunction = Callable[[spack.spec.Spec, List[AspFunction]], List[AspFunct
 #: Enable the addition of a runtime node
 WITH_RUNTIME = sys.platform != "win32"
 
-#: Data class that contain configuration on what a
-#: clingo solve should output.
-#:
-#: Args:
-#:     timers (bool):  Print out coarse timers for different solve phases.
-#:     stats (bool): Whether to output Clingo's internal solver statistics.
-#:     out: Optional output stream for the generated ASP program.
-#:     setup_only (bool): if True, stop after setup and don't solve (default False).
-OutputConfiguration = collections.namedtuple(
-    "OutputConfiguration", ["timers", "stats", "out", "setup_only"]
-)
+
+class OutputConfiguration(NamedTuple):
+    """Data class that contains configuration on what a clingo solve should output."""
+
+    #: Print out coarse timers for different solve phases
+    timers: bool
+    #: Whether to output Clingo's internal solver statistics
+    stats: bool
+    #: Optional output stream for the generated ASP program
+    out: Optional[io.IOBase]
+    #: If True, stop after setup and don't solve
+    setup_only: bool
+
 
 #: Default output configuration for a solve
 DEFAULT_OUTPUT_CONFIGURATION = OutputConfiguration(
@@ -498,7 +501,7 @@ class Result:
             # The specs must be unified to get here, so it is safe to associate any satisfying spec
             # with the input. Multiple inputs may be matched to the same concrete spec
             node = SpecBuilder.make_node(pkg=input_spec.name)
-            if input_spec.virtual:
+            if spack.repo.PATH.is_virtual(input_spec.name):
                 providers = [
                     spec.name for spec in answer.values() if spec.package.provides(input_spec.name)
                 ]
@@ -2080,7 +2083,11 @@ class SpackSolverSetup:
         f: Union[Type[_Head], Type[_Body]] = _Body if body else _Head
 
         if spec.name:
-            clauses.append(f.node(spec.name) if not spec.virtual else f.virtual_node(spec.name))
+            clauses.append(
+                f.node(spec.name)
+                if not spack.repo.PATH.is_virtual(spec.name)
+                else f.virtual_node(spec.name)
+            )
         if spec.namespace:
             clauses.append(f.namespace(spec.name, spec.namespace))
 
@@ -2107,7 +2114,7 @@ class SpackSolverSetup:
 
             for value in variant.value_as_tuple:
                 # ensure that the value *can* be valid for the spec
-                if spec.name and not spec.concrete and not spec.virtual:
+                if spec.name and not spec.concrete and not spack.repo.PATH.is_virtual(spec.name):
                     variant_defs = vt.prevalidate_variant_value(
                         self.pkg_class(spec.name), variant, spec
                     )
@@ -2667,7 +2674,9 @@ class SpackSolverSetup:
         # Fail if we already know an unreachable node is requested
         for spec in specs:
             missing_deps = [
-                str(d) for d in spec.traverse() if d.name not in self.pkgs and not d.virtual
+                str(d)
+                for d in spec.traverse()
+                if d.name not in self.pkgs and not spack.repo.PATH.is_virtual(d.name)
             ]
             if missing_deps:
                 raise spack.spec.InvalidDependencyError(spec.name, missing_deps)
@@ -2884,7 +2893,11 @@ class SpackSolverSetup:
                     pkg_name = clause.args[1]
                     self.gen.fact(fn.mentioned_in_literal(trigger_id, root_name, pkg_name))
 
-            requirements.append(fn.attr("virtual_root" if spec.virtual else "root", spec.name))
+            requirements.append(
+                fn.attr(
+                    "virtual_root" if spack.repo.PATH.is_virtual(spec.name) else "root", spec.name
+                )
+            )
             cache[imposed_spec_key] = (effect_id, requirements)
             self.gen.fact(fn.pkg_fact(spec.name, fn.condition_effect(condition_id, effect_id)))
 
@@ -3472,7 +3485,7 @@ class SpecBuilder:
         self._specs[node].extra_attributes = spec_info.get("extra_attributes", {})
 
         # If this is an extension, update the dependencies to include the extendee
-        package = self._specs[node].package_class(self._specs[node])
+        package = spack.repo.PATH.get_pkg_class(self._specs[node].fullname)(self._specs[node])
         extendee_spec = package.extendee_spec
 
         if extendee_spec:
@@ -4085,10 +4098,10 @@ class Solver:
         reusable = []
         for root in specs:
             for s in root.traverse():
-                if s.virtual:
-                    continue
                 if s.concrete:
                     reusable.append(s)
+                elif spack.repo.PATH.is_virtual(s.name):
+                    continue
                 spack.spec.Spec.ensure_valid_variants(s)
         return reusable
 
