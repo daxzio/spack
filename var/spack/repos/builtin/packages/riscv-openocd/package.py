@@ -11,17 +11,17 @@ class RiscvOpenocd(AutotoolsPackage):
     programming and boundary-scan testing for embedded target devices.
     """
 
+    license("GPL-2.0-or-later")
+
     homepage = "https://openocd.org/"
     url = "https://github.com/riscv-collab/riscv-openocd/archive/refs/tags/v2018.12.0.tar.gz"
     git = "https://github.com/riscv-collab/riscv-openocd.git"
 
     maintainers("davekeeshan")
 
-    license("GPL-2.0-or-later")
+    version("master", branch="master", submodules=True)
 
-    version("master", branch="master")
-
-    version("2025.01.07", commit="c4ea6d18d003435c90c150e8acb511019591f2e8", submodules=True)
+    version("2025.01.29", commit="5de7310881c18a50797e8d96cf6d3f3aeb2aa4d0", submodules=True)
     version("2024.11.21", commit="1bf7efb2d5be792116bad3d0d7cfb812228d18ea", submodules=True)
     version("2018.12.0", commit="c3c76bfafa6612dc56b3914c9f93eb2a790ef87b", submodules=True)
 
