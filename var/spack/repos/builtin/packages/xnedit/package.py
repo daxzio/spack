@@ -1,5 +1,4 @@
-# Copyright 2013-2023 Lawrence Livermore National Security, LLC and other
-# Spack Project Developers. See the top-level COPYRIGHT file for details.
+# Copyright Spack Project Developers. See COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
@@ -7,16 +6,10 @@ from spack.package import *
 
 
 class Xnedit(MakefilePackage):
-    """XNEdit is a multi-purpose text editor for the X Window System, which
-    combines a standard, easy to use, graphical user interface with the thorough
-    functionality and stability required by users who edit text eight hours a
-    day. It provides intensive support for development in a wide variety of
-    languages, text processors, and other tools, but at the same time can be
-    used productively by just about anyone who needs to edit text.
+    """XNEdit is a multi-purpose text editor for the X Window System, which combines a standard,
+    easy to use, graphical user interface with the thorough functionality and stability."""
 
-    XNEdit is a fork of the Nirvana Editor (NEdit) and provides new
-    functionality like antialiased text rendering and support for unicode.
-    """
+    license("GPL-2.0-or-later")
 
     homepage = "https://www.unixwork.de/xnedit/"
     url = "https://github.com/unixwork/xnedit/archive/refs/tags/v1.6.1.tar.gz"
@@ -24,8 +17,7 @@ class Xnedit(MakefilePackage):
 
     maintainers("davekeeshan")
 
-    license("GPL-2.0-or-later")
-
+    version("1.6.2", sha256="0ee832ad186b81b8ba8df43352d86e35997cea9708ff7ddad15e9d91fe81b6cb")
     version("1.6.1", sha256="46489fa3017f5e40da810170b33c681affd3cd4dff1dbd0f8a4c51f8285ca5c4")
     version("1.6.0", sha256="197e635fc1aa8e4ff2dcd2375efac597975f04170c3eace3280c4054bbbc57ac")
     version("1.5.3", sha256="89421abbcb91f27e122b874769ca60021802735ea527fc6ae5b3d50061f81120")
