@@ -21,21 +21,23 @@ class Openocd(AutotoolsPackage):
 
     version("master", branch="master")
 
+    version("2025.03.01", commit="a168c634126e9e6bb95c6e68b2db5afbb099abf7")
     version("2025.01.09", commit="d4b3b4ea82ba6d34b050a1cc068e0b105533e2f2", submodules=True)
     version("0.12.0", commit="9ea7f3d647c8ecf6b0f1424002dfc3f4504a162c", submodules=True)
 
     depends_on("c", type="build")  # generated
     depends_on("cxx", type="build")  # generated
 
-    variant("remotebitbang", default=False, description="build with remote bitbang support")
-    variant("ftdi", default=False, description="build with ftdi support")
-    variant("linuxgpiod", default=False, description="build with linux gpio support")
-    variant("bcm2835gpio", default=False, description="build with bcm2835gpio support")
+    variant("remotebitbang", default=True, description="build with remote bitbang support")
+    variant("ftdi", default=True, description="build with ftdi support")
+    variant("linuxgpiod", default=True, description="build with linux gpio support")
+    variant("bcm2835gpio", default=True, description="build with bcm2835gpio support")
 
     depends_on("automake", type="build")
     depends_on("autoconf", type="build")
     depends_on("pkgconfig", type="build")
     depends_on("libtool", type="build")
+    depends_on("jimtcl@:0.79", type="build", when="@2025.03.01:")
     depends_on("libusb", type="build", when="+ftdi")
     depends_on("libftdi", type="build", when="+ftdi")
     depends_on("libgpiod@:1.6", type="build", when="+linuxgpiod")
