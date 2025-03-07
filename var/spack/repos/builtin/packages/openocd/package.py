@@ -43,8 +43,7 @@ class Openocd(AutotoolsPackage):
     depends_on("libgpiod@:1.6", type="build", when="+linuxgpiod")
 
     def autoreconf(self, spec, prefix):
-        bash = which("bash")
-        bash("./bootstrap")
+        Executable("./bootstrap")()
 
     def configure_args(self):
         spec = self.spec
