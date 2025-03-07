@@ -1,5 +1,4 @@
-# Copyright 2013-2024 Lawrence Livermore National Security, LLC and other
-# Spack Project Developers. See the top-level COPYRIGHT file for details.
+# Copyright Spack Project Developers. See COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 """Test environment internals without CLI"""
@@ -191,8 +190,7 @@ def test_environment_cant_modify_environments_root(tmpdir):
 @pytest.mark.parametrize(
     "original_content",
     [
-        (
-            """\
+        """\
 spack:
   specs:
   - matrix:
@@ -200,7 +198,6 @@ spack:
     - - a
   concretizer:
     unify: false"""
-        )
     ],
 )
 def test_roundtrip_spack_yaml_with_comments(original_content, mock_packages, config, tmp_path):
@@ -522,7 +519,9 @@ def test_error_message_when_using_too_new_lockfile(tmp_path):
         ("when_possible", True),
     ],
 )
-def test_environment_concretizer_scheme_used(tmp_path, unify_in_lower_scope, unify_in_spack_yaml):
+def test_environment_concretizer_scheme_used(
+    tmp_path, mutable_config, unify_in_lower_scope, unify_in_spack_yaml
+):
     """Tests that "unify" settings in spack.yaml always take precedence over settings in lower
     configuration scopes.
     """
@@ -536,10 +535,11 @@ spack:
     unify: {str(unify_in_spack_yaml).lower()}
 """
     )
-
-    with spack.config.override("concretizer:unify", unify_in_lower_scope):
-        with ev.Environment(manifest.parent) as e:
-            assert e.unify == unify_in_spack_yaml
+    mutable_config.set("concretizer:unify", unify_in_lower_scope)
+    assert mutable_config.get("concretizer:unify") == unify_in_lower_scope
+    with ev.Environment(manifest.parent) as e:
+        assert mutable_config.get("concretizer:unify") == unify_in_spack_yaml
+        assert e.unify == unify_in_spack_yaml
 
 
 @pytest.mark.parametrize("unify_in_config", [True, False, "when_possible"])

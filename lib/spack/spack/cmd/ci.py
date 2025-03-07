@@ -1,5 +1,4 @@
-# Copyright 2013-2024 Lawrence Livermore National Security, LLC and other
-# Spack Project Developers. See the top-level COPYRIGHT file for details.
+# Copyright Spack Project Developers. See COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
@@ -176,6 +175,11 @@ def setup_parser(subparser):
     )
     reproduce.add_argument(
         "-s", "--autostart", help="Run docker reproducer automatically", action="store_true"
+    )
+    reproduce.add_argument(
+        "--use-local-head",
+        help="Use the HEAD of the local Spack instead of reproducing a commit",
+        action="store_true",
     )
     gpg_group = reproduce.add_mutually_exclusive_group(required=False)
     gpg_group.add_argument(
@@ -609,7 +613,12 @@ def ci_reproduce(args):
         gpg_key_url = None
 
     return spack_ci.reproduce_ci_job(
-        args.job_url, args.working_dir, args.autostart, gpg_key_url, args.runtime
+        args.job_url,
+        args.working_dir,
+        args.autostart,
+        gpg_key_url,
+        args.runtime,
+        args.use_local_head,
     )
 
 

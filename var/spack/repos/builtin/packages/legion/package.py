@@ -1,5 +1,4 @@
-# Copyright 2013-2024 Lawrence Livermore National Security, LLC and other
-# Spack Project Developers. See the top-level COPYRIGHT file for details.
+# Copyright Spack Project Developers. See COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
@@ -407,7 +406,7 @@ class Legion(CMakePackage, ROCmPackage):
         if spec.satisfies("+kokkos"):
             # default is off.
             options.append("-DLegion_USE_Kokkos=ON")
-            os.environ["KOKKOS_CXX_COMPILER"] = spec["kokkos"].kokkos_cxx
+            os.environ["KOKKOS_CXX_COMPILER"] = self["kokkos"].kokkos_cxx
             if spec.satisfies("+cuda+cuda_unsupported_compiler ^kokkos%clang +cuda"):
                 # Keep CMake CUDA compiler detection happy
                 options.append(

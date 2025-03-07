@@ -1,5 +1,4 @@
-# Copyright 2013-2024 Lawrence Livermore National Security, LLC and other
-# Spack Project Developers. See the top-level COPYRIGHT file for details.
+# Copyright Spack Project Developers. See COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 import collections
@@ -51,6 +50,8 @@ from spack.schema.env import TOP_LEVEL_KEY
 from spack.spec import Spec
 from spack.spec_list import SpecList
 from spack.util.path import substitute_path_variables
+
+from ..enums import ConfigScopePriority
 
 SpecPair = spack.concretize.SpecPair
 
@@ -388,6 +389,7 @@ def create_in_dir(
                 # dev paths in this environment to refer to their original
                 # locations.
                 _rewrite_relative_dev_paths_on_relocation(env, init_file_dir)
+                _rewrite_relative_repos_paths_on_relocation(env, init_file_dir)
 
     return env
 
@@ -404,8 +406,8 @@ def _rewrite_relative_dev_paths_on_relocation(env, init_file_dir):
             dev_path = substitute_path_variables(entry["path"])
             expanded_path = spack.util.path.canonicalize_path(dev_path, default_wd=init_file_dir)
 
-            # Skip if the expanded path is the same (e.g. when absolute)
-            if dev_path == expanded_path:
+            # Skip if the substituted and expanded path is the same (e.g. when absolute)
+            if entry["path"] == expanded_path:
                 continue
 
             tty.debug("Expanding develop path for {0} to {1}".format(name, expanded_path))
@@ -415,6 +417,34 @@ def _rewrite_relative_dev_paths_on_relocation(env, init_file_dir):
         spack.config.set("develop", dev_specs, scope=env.scope_name)
 
         env._dev_specs = None
+        # If we changed the environment's spack.yaml scope, that will not be reflected
+        # in the manifest that we read
+        env._re_read()
+
+
+def _rewrite_relative_repos_paths_on_relocation(env, init_file_dir):
+    """When initializing the environment from a manifest file and we plan
+    to store the environment in a different directory, we have to rewrite
+    relative repo paths to absolute ones and expand environment variables."""
+    with env:
+        repos_specs = spack.config.get("repos", default={}, scope=env.scope_name)
+        if not repos_specs:
+            return
+        for i, entry in enumerate(repos_specs):
+            repo_path = substitute_path_variables(entry)
+            expanded_path = spack.util.path.canonicalize_path(repo_path, default_wd=init_file_dir)
+
+            # Skip if the substituted and expanded path is the same (e.g. when absolute)
+            if entry == expanded_path:
+                continue
+
+            tty.debug("Expanding repo path for {0} to {1}".format(entry, expanded_path))
+
+            repos_specs[i] = expanded_path
+
+        spack.config.set("repos", repos_specs, scope=env.scope_name)
+
+        env.repos_specs = None
         # If we changed the environment's spack.yaml scope, that will not be reflected
         # in the manifest that we read
         env._re_read()
@@ -582,7 +612,7 @@ def _error_on_nonempty_view_dir(new_root):
     # Check if the target path lexists
     try:
         st = os.lstat(new_root)
-    except (IOError, OSError):
+    except OSError:
         return
 
     # Empty directories are fine
@@ -862,7 +892,7 @@ class ViewDescriptor:
         ):
             try:
                 shutil.rmtree(old_root)
-            except (IOError, OSError) as e:
+            except OSError as e:
                 msg = "Failed to remove old view at %s\n" % old_root
                 msg += str(e)
                 tty.warn(msg)
@@ -2393,6 +2423,8 @@ class Environment:
 
     def __enter__(self):
         self._previous_active = _active_environment
+        if self._previous_active:
+            deactivate()
         activate(self)
         return self
 
@@ -2555,7 +2587,7 @@ def is_latest_format(manifest):
     try:
         with open(manifest, encoding="utf-8") as f:
             data = syaml.load(f)
-    except (OSError, IOError):
+    except OSError:
         return True
     top_level_key = _top_level_key(data)
     changed = spack.schema.env.update(data[top_level_key])
@@ -2634,6 +2666,32 @@ def initialize_environment_dir(
         return
 
     shutil.copy(envfile, target_manifest)
+
+    # Copy relative path includes that live inside the environment dir
+    try:
+        manifest = EnvironmentManifestFile(environment_dir)
+    except Exception:
+        # error handling for bad manifests is handled on other code paths
+        return
+
+    includes = manifest[TOP_LEVEL_KEY].get("include", [])
+    for include in includes:
+        if os.path.isabs(include):
+            continue
+
+        abspath = pathlib.Path(os.path.normpath(environment_dir / include))
+        common_path = pathlib.Path(os.path.commonpath([environment_dir, abspath]))
+        if common_path != environment_dir:
+            tty.debug(f"Will not copy relative include from outside environment: {include}")
+            continue
+
+        orig_abspath = os.path.normpath(envfile.parent / include)
+        if not os.path.exists(orig_abspath):
+            tty.warn(f"Included file does not exist; will not copy: '{include}'")
+            continue
+
+        fs.touchp(abspath)
+        shutil.copy(orig_abspath, abspath)
 
 
 class EnvironmentManifestFile(collections.abc.Mapping):
@@ -3042,7 +3100,7 @@ class EnvironmentManifestFile(collections.abc.Mapping):
     def prepare_config_scope(self) -> None:
         """Add the manifest's scopes to the global configuration search path."""
         for scope in self.env_config_scopes:
-            spack.config.CONFIG.push_scope(scope)
+            spack.config.CONFIG.push_scope(scope, priority=ConfigScopePriority.ENVIRONMENT)
 
     def deactivate_config_scope(self) -> None:
         """Remove any of the manifest's scopes from the global config path."""
