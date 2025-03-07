@@ -21,6 +21,7 @@ class RiscvOpenocd(AutotoolsPackage):
 
     version("master", branch="master", submodules=True)
 
+    version("2025.03.02", commit="67082829da364ad042eea12a455450d707ea4d57", submodules=True)
     version("2025.01.29", commit="5de7310881c18a50797e8d96cf6d3f3aeb2aa4d0", submodules=True)
     version("2024.11.21", commit="1bf7efb2d5be792116bad3d0d7cfb812228d18ea", submodules=True)
     version("2018.12.0", commit="c3c76bfafa6612dc56b3914c9f93eb2a790ef87b", submodules=True)
@@ -42,8 +43,7 @@ class RiscvOpenocd(AutotoolsPackage):
     depends_on("libgpiod@:1.6", type="build", when="+linuxgpiod")
 
     def autoreconf(self, spec, prefix):
-        bash = which("bash")
-        bash("./bootstrap")
+        Executable("./bootstrap")()
 
     def configure_args(self):
         spec = self.spec
