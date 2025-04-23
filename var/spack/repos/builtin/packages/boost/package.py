@@ -81,9 +81,6 @@ class Boost(Package):
     version("1.40.0", sha256="36cf4a239b587067a4923fdf6e290525a14c3af29829524fa73f3dec6841530c")
     version("1.39.0", sha256="44785eae8c6cce61a29a8a51f9b737e57b34d66baa7c0bcd4af188832b8018fd")
 
-    depends_on("c", type="build")
-    depends_on("cxx", type="build")
-
     with_default_variants = "boost" + "".join(
         [
             "+atomic",
@@ -239,6 +236,9 @@ class Boost(Package):
         multi=False,
         description="Default symbol visibility in compiled libraries " "(1.69.0 or later)",
     )
+
+    depends_on("c", type="build")
+    depends_on("cxx", type="build")
 
     # Unicode support
     depends_on("icu4c", when="+icu")
@@ -831,10 +831,12 @@ class Boost(Package):
         if (sys.platform == "darwin") and ("+shared" in spec):
             fix_darwin_install_name(prefix.lib)
 
-    def setup_run_environment(self, env):
+    def setup_run_environment(self, env: EnvironmentModifications) -> None:
         env.set("BOOST_ROOT", self.prefix)
 
-    def setup_dependent_build_environment(self, env, dependent_spec):
+    def setup_dependent_build_environment(
+        self, env: EnvironmentModifications, dependent_spec: Spec
+    ) -> None:
         if "+context" in self.spec and "context-impl" in self.spec.variants:
             context_impl = self.spec.variants["context-impl"].value
             # fcontext, as the default, has no corresponding macro

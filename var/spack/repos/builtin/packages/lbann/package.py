@@ -34,8 +34,6 @@ class Lbann(CachedCMakePackage, CudaPackage, ROCmPackage):
         deprecated=True,
     )
 
-    depends_on("cxx", type="build")  # generated
-
     variant(
         "build_type",
         default="Release",
@@ -118,6 +116,9 @@ class Lbann(CachedCMakePackage, CudaPackage, ROCmPackage):
     conflicts("+lld", when="+gold")
     conflicts("+gold", when="platform=darwin", msg="gold does not work on Darwin")
     conflicts("+lld", when="platform=darwin", msg="lld does not work on Darwin")
+
+    depends_on("c", type="build")
+    depends_on("cxx", type="build")  # generated
 
     depends_on("cmake@3.17.0:", type="build")
     depends_on("cmake@3.21.0:", type="build", when="@0.103:")
@@ -249,7 +250,7 @@ class Lbann(CachedCMakePackage, CudaPackage, ROCmPackage):
 
     generator("ninja")
 
-    def setup_build_environment(self, env):
+    def setup_build_environment(self, env: EnvironmentModifications) -> None:
         env.append_flags("CXXFLAGS", "-fno-omit-frame-pointer")
         if self.spec.satisfies("%apple-clang"):
             env.append_flags("CPPFLAGS", self.compiler.openmp_flag)
