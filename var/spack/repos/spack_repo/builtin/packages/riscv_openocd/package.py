@@ -6,24 +6,26 @@
 from spack.package import *
 
 
-class Openocd(AutotoolsPackage):
+class RiscvOpenocd(AutotoolsPackage):
     """The Open On-Chip Debugger (OpenOCD) aims to provide debugging, in-system
     programming and boundary-scan testing for embedded target devices.
     """
 
+    license("GPL-2.0-or-later")
+
     homepage = "https://openocd.org/"
-    url = "https://github.com/openocd-org/openocd/archive/refs/tags/v0.12.0.tar.gz"
-    git = "https://github.com/openocd-org/openocd.git"
+    url = "https://github.com/riscv-collab/riscv-openocd/archive/refs/tags/v2018.12.0.tar.gz"
+    git = "https://github.com/riscv-collab/riscv-openocd.git"
 
     maintainers("davekeeshan")
 
-    license("GPL-2.0-or-later")
+    version("master", branch="master", submodules=True)
 
-    version("master", branch="master")
-
-    version("2025.03.01", commit="a168c634126e9e6bb95c6e68b2db5afbb099abf7")
-    version("2025.01.09", commit="d4b3b4ea82ba6d34b050a1cc068e0b105533e2f2", submodules=True)
-    version("0.12.0", commit="9ea7f3d647c8ecf6b0f1424002dfc3f4504a162c", submodules=True)
+    version("2025.03.31", commit="2605cbd73c36998e76d32cded95a02b424870626", submodules=True)
+    version("2025.03.02", commit="67082829da364ad042eea12a455450d707ea4d57", submodules=True)
+    version("2025.01.29", commit="5de7310881c18a50797e8d96cf6d3f3aeb2aa4d0", submodules=True)
+    version("2024.11.21", commit="1bf7efb2d5be792116bad3d0d7cfb812228d18ea", submodules=True)
+    version("2018.12.0", commit="c3c76bfafa6612dc56b3914c9f93eb2a790ef87b", submodules=True)
 
     depends_on("c", type="build")  # generated
     depends_on("cxx", type="build")  # generated
@@ -37,10 +39,10 @@ class Openocd(AutotoolsPackage):
     depends_on("autoconf", type="build")
     depends_on("pkgconfig", type="build")
     depends_on("libtool", type="build")
-    depends_on("jimtcl@:0.79", type="build", when="@2025.03.01:")
     depends_on("libusb", type="build", when="+ftdi")
     depends_on("libftdi", type="build", when="+ftdi")
     depends_on("libgpiod@:1.6", type="build", when="+linuxgpiod")
+    depends_on("jimtcl@:0.79", type="build", when="@2025.03.31:")
 
     def autoreconf(self, spec, prefix):
         Executable("./bootstrap")()
