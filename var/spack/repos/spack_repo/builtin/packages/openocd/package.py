@@ -6,38 +6,39 @@
 from spack.package import *
 
 
-class RiscvOpenocd(AutotoolsPackage):
+class Openocd(AutotoolsPackage):
     """The Open On-Chip Debugger (OpenOCD) aims to provide debugging, in-system
     programming and boundary-scan testing for embedded target devices.
     """
 
-    license("GPL-2.0-or-later")
-
     homepage = "https://openocd.org/"
-    url = "https://github.com/riscv-collab/riscv-openocd/archive/refs/tags/v2018.12.0.tar.gz"
-    git = "https://github.com/riscv-collab/riscv-openocd.git"
+    url = "https://github.com/openocd-org/openocd/archive/refs/tags/v0.12.0.tar.gz"
+    git = "https://github.com/openocd-org/openocd.git"
 
     maintainers("davekeeshan")
 
-    version("master", branch="master", submodules=True)
+    license("GPL-2.0-or-later")
 
-    version("2025.03.02", commit="67082829da364ad042eea12a455450d707ea4d57", submodules=True)
-    version("2025.01.29", commit="5de7310881c18a50797e8d96cf6d3f3aeb2aa4d0", submodules=True)
-    version("2024.11.21", commit="1bf7efb2d5be792116bad3d0d7cfb812228d18ea", submodules=True)
-    version("2018.12.0", commit="c3c76bfafa6612dc56b3914c9f93eb2a790ef87b", submodules=True)
+    version("master", branch="master")
+
+    version("2025.05.09", commit="744955e5b4f4f943c187622f4ae977bc4cd6fdb7")
+    version("2025.03.01", commit="a168c634126e9e6bb95c6e68b2db5afbb099abf7")
+    version("2025.01.09", commit="d4b3b4ea82ba6d34b050a1cc068e0b105533e2f2", submodules=True)
+    version("0.12.0", commit="9ea7f3d647c8ecf6b0f1424002dfc3f4504a162c", submodules=True)
 
     depends_on("c", type="build")  # generated
     depends_on("cxx", type="build")  # generated
 
-    variant("remotebitbang", default=False, description="build with remote bitbang support")
-    variant("ftdi", default=False, description="build with ftdi support")
-    variant("linuxgpiod", default=False, description="build with linux gpio support")
-    variant("bcm2835gpio", default=False, description="build with bcm2835gpio support")
+    variant("remotebitbang", default=True, description="build with remote bitbang support")
+    variant("ftdi", default=True, description="build with ftdi support")
+    variant("linuxgpiod", default=True, description="build with linux gpio support")
+    variant("bcm2835gpio", default=True, description="build with bcm2835gpio support")
 
     depends_on("automake", type="build")
     depends_on("autoconf", type="build")
     depends_on("pkgconfig", type="build")
     depends_on("libtool", type="build")
+    depends_on("jimtcl@:0.79", type="build", when="@2025.03.01:")
     depends_on("libusb", type="build", when="+ftdi")
     depends_on("libftdi", type="build", when="+ftdi")
     depends_on("libgpiod@:1.6", type="build", when="+linuxgpiod")
