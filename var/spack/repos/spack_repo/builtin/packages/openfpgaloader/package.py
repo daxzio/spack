@@ -21,6 +21,8 @@ class Openfpgaloader(CMakePackage):
     license("Apache-2.0 OR MIT")
 
     version("master", branch="master")
+    version("0.13.1", sha256="372f1942dec8a088bc7475f94ccf5a86264cb74e9154d8a162b8d4d26d3971e3")
+    version("0.13.0", sha256="f8037b8080eec21afc74284c8b0352a2ba76ea685733ba63d8322d6fe39e7721")
     version("0.12.1", sha256="8fb2d1aa3a0de50222f6286c47220a5bc7b73708b60fb7d58f764deebd43d82d")
 
     depends_on("c", type="build")  # generated
