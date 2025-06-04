@@ -3,13 +3,14 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 import os
 from glob import glob
+from spack_repo.builtin.build_systems.generic import Package
 from spack.package import *
 
 
 class ArmGnuToolchain(Package):
     """Arm GNU Toolchain is a community supported pre-built GNU compiler toolchain for Arm based CPUs."""
 
-    homepage = "https://developer.arm.com/"
+    homepage = "https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads"
     url = "https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz"
 
     maintainers("davekeeshan")
@@ -29,7 +30,9 @@ class ArmGnuToolchain(Package):
         url="https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz",
         sha256="6cd1bbc1d9ae57312bcd169ae283153a9572bd6a8e4eeae2fedfbc33b115fdbb",
     )
-
+    
+#     depends_on("python@3.9:")
+    
     def install(self, spec, prefix):
         src = os.getcwd()
         content = glob(f"{src}/*")
