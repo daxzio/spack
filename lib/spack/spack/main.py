@@ -561,7 +561,19 @@ def setup_main_options(args):
     for config_var in args.config_vars or []:
         spack.config.add(fullpath=config_var, scope="command_line")
 
-    spack.repo.enable_repo(spack.repo.RepoPath.from_config(spack.config.CONFIG))
+    # In the main function we automatically fetch remote package repositories if necessary
+    repo_descriptors = spack.repo.RepoDescriptors.from_config(
+        lock=spack.repo.package_repository_lock(), config=spack.config.CONFIG
+    )
+
+    repo_path, errors = repo_descriptors.construct(fetch=True)
+
+    # Merely warn if package repositories from config could not be constructed.
+    if errors:
+        for path, error in errors.items():
+            tty.warn(f"Error constructing repository '{path}': {error}")
+
+    spack.repo.enable_repo(repo_path)
 
     # On Windows10 console handling for ASCI/VT100 sequences is not
     # on by default. Turn on before we try to write to console
@@ -881,9 +893,6 @@ def add_command_line_scopes(
                 cfg.push_scope(
                     spack.config.DirectoryConfigScope(name, path, writable=False),
                     priority=ConfigScopePriority.CUSTOM,
-                )
-                spack.config._add_platform_scope(
-                    cfg, name, path, priority=ConfigScopePriority.CUSTOM, writable=False
                 )
                 continue
             else:
